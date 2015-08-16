@@ -1,0 +1,7 @@
+gccC:\WORKS\WS\Eclipse_Luna\C_SoundProg\main\D-3\ex1_1.c
+
+make -f C:\WORKS\WS\Eclipse_Luna\C_SoundProg\main\D-3\makefile
+
+dir C:\WORKS\WS\Eclipse_Luna\C_SoundProg\main\D-3
+
+C:\WORKS\WS\Eclipse_Luna\C_SoundProg\main\D-3\ex1_1.exe
