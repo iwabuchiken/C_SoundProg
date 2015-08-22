@@ -2,12 +2,39 @@
 #include <stdlib.h>
 #include "wave.h"
 
-int main(void)
+int main(int argc, char *argv[])
+//int main(void)
 {
+
+	char fname_In[30];
+
+	///////////////////////////////
+	//
+	// file name
+	//
+	 ///////////////////////////////
+//	printf("[%s:%d] argc = %d\n", __FILE__, __LINE__, argc);
+//	printf("[%s:%d] argv[0] = %s\n", __FILE__, __LINE__, argv[0]);
+
+	if (argc > 1) {
+
+		//REF http://www.tutorialspoint.com/c_standard_library/c_function_sprintf.htm
+		sprintf(fname_In, "%s", argv[1]);
+
+	} else {
+
+		sprintf(fname_In, "%s", "a.wav");
+
+	}
+
+	printf("[%s:%d] input file => %s\n", __FILE__, __LINE__, fname_In);
+
+
 	MONO_PCM pcm0, pcm1;
 	int n;
 
-	mono_wave_read(&pcm0, "a.wav"); /* WAVE�t�@�C�����烂�m�����̉��f�[�^���͂��� */
+	mono_wave_read(&pcm0, fname_In); /* WAVE�t�@�C�����烂�m�����̉��f�[�^���͂��� */
+//	mono_wave_read(&pcm0, "a.wav"); /* WAVE�t�@�C�����烂�m�����̉��f�[�^���͂��� */
 
 	pcm1.fs = pcm0.fs; /* �W�{����g�� */
 	pcm1.bits = pcm0.bits; /* �ʎq�����x */
@@ -36,20 +63,20 @@ int main(void)
 	printf("[%s:%d] pcm1.s[100] => %d\n", __FILE__, __LINE__, pcm1.s[100]);
 
 
-	for (i = 90; i < 100; ++i) {
-
-//		printf("[%s:%d] pcm0.s[%d] = %f\n",
-//		printf("[%s:%d] pcm0.s[%d] = %d\n",
-		printf("[%s:%d] pcm0.s[%d] = %f / pcm1.s[%d] = %f\n",
-//		printf("[%s:%d] pcm0.s[%d] = %d / pcm1.s[%d] = %d\n",
-				__FILE__, __LINE__,
-//				i, pcm0.s[i]);
-//				i, *(pcm0.s[i]),
-//				i, *pcm1.s[i]);
-				i, pcm0.s[i],
-				i, pcm1.s[i]);
-
-	}
+//	for (i = 90; i < 100; ++i) {
+//
+////		printf("[%s:%d] pcm0.s[%d] = %f\n",
+////		printf("[%s:%d] pcm0.s[%d] = %d\n",
+//		printf("[%s:%d] pcm0.s[%d] = %f / pcm1.s[%d] = %f\n",
+////		printf("[%s:%d] pcm0.s[%d] = %d / pcm1.s[%d] = %d\n",
+//				__FILE__, __LINE__,
+////				i, pcm0.s[i]);
+////				i, *(pcm0.s[i]),
+////				i, *pcm1.s[i]);
+//				i, pcm0.s[i],
+//				i, pcm1.s[i]);
+//
+//	}
 
 	free(pcm0.s); /* �������̉�� */
 	free(pcm1.s); /* �������̉�� */

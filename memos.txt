@@ -1,7 +1,21 @@
-gccC:\WORKS\WS\Eclipse_Luna\C_SoundProg\main\D-3\ex1_1.c
+gcc C:\WORKS\WS\Eclipse_Luna\C_SoundProg\main\D-3\ex1_1.c
 
 make -f C:\WORKS\WS\Eclipse_Luna\C_SoundProg\main\D-3\makefile
+
+#REF http://stackoverflow.com/questions/2826029/passing-additional-variables-from-command-line-to-make
+make -f C:\WORKS\WS\Eclipse_Luna\C_SoundProg\main\D-3\makefile C_SRCS_TRUNK=D-3_v-1.1
+
+make -f C:\WORKS\WS\Eclipse_Luna\C_SoundProg\main\D-3\makefile clean
 
 dir C:\WORKS\WS\Eclipse_Luna\C_SoundProg\main\D-3
 
 C:\WORKS\WS\Eclipse_Luna\C_SoundProg\main\D-3\ex1_1.exe
+
+pushd C:\WORKS\WS\Eclipse_Luna\C_SoundProg\main\D-3
+
+ex1_1.exe
+
+D-3_v-1.1.exe
+
+D-3_v-1.1.exe 2014-10-02_15-49-55-766.wav
+D-3_v-1.1.exe 2014-10-02_15-49-55-766
