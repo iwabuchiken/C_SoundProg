@@ -1,0 +1,15 @@
+/*
+ * main.c
+ *
+ *  Created on: 2015/08/16
+ *      Author: kbuchi
+ */
+#include <stdio.h>
+
+int main() {
+
+	printf("done");
+
+	return 0;
+
+}

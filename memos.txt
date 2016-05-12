@@ -19,3 +19,10 @@ D-3_v-1.1.exe
 
 D-3_v-1.1.exe 2014-10-02_15-49-55-766.wav
 D-3_v-1.1.exe 2014-10-02_15-49-55-766
+
+[console]
+pushd C:\WORKS\WS\Eclipse_Luna\C_SoundProg
+gitk
+
+pushd C:\WORKS\WS\Eclipse_Luna\C_SoundProg\main\J_Prog_5
+make
