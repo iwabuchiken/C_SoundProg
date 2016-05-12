@@ -188,6 +188,7 @@ void stereo_wave_read(STEREO_PCM *pcm, char *file_name)
 	long data_chunk_size;
 	short data;
 
+<<<<<<< HEAD
 	char tmp[10];	// display data_chunk_ID
 //	char tmp[5];	// display data_chunk_ID
 
@@ -196,6 +197,10 @@ void stereo_wave_read(STEREO_PCM *pcm, char *file_name)
 	printf("[%s:%d] stereo_wave_read: file opened => %s\n", __FILE__, __LINE__, file_name);
 
 
+=======
+	fp = fopen(file_name, "rb");
+
+>>>>>>> D-3_first
 	fread(riff_chunk_ID, 1, 4, fp);
 	fread(&riff_chunk_size, 4, 1, fp);
 	fread(riff_form_type, 1, 4, fp);
@@ -210,6 +215,7 @@ void stereo_wave_read(STEREO_PCM *pcm, char *file_name)
 	fread(data_chunk_ID, 1, 4, fp);
 	fread(&data_chunk_size, 4, 1, fp);
 
+<<<<<<< HEAD
 	//debug: riff_chunk_ID
 	printf("[%s:%d] riff_chunk_ID[0] => %c (%d)\n", __FILE__, __LINE__, riff_chunk_ID[0], riff_chunk_ID[0]);
 	printf("[%s:%d] riff_chunk_ID[1] => %c (%d)\n", __FILE__, __LINE__, riff_chunk_ID[1], riff_chunk_ID[1]);
@@ -273,13 +279,24 @@ void stereo_wave_read(STEREO_PCM *pcm, char *file_name)
 
 	printf("[%s:%d] pcm->sR => calloc --> done\n", __FILE__, __LINE__);
 
+=======
+	pcm->fs = fmt_samples_per_sec; /* �W�{����g�� */
+	pcm->bits = fmt_bits_per_sample; /* �ʎq�����x */
+	pcm->length = data_chunk_size / 4; /* ���f�[�^�̒��� */
+	pcm->sL = calloc(pcm->length, sizeof(double)); /* �������̊m�� */
+	pcm->sR = calloc(pcm->length, sizeof(double)); /* �������̊m�� */
+
+>>>>>>> D-3_first
 	for (n = 0; n < pcm->length; n++)
 	{
 	  fread(&data, 2, 1, fp); /* ���f�[�^�iL�`�����l���j�̓ǂݎ�� */
 	  pcm->sL[n] = (double)data / 32768.0; /* ���f�[�^��-1�ȏ�1�����͈̔͂ɐ��K������ */
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> D-3_first
 	  fread(&data, 2, 1, fp); /* ���f�[�^�iR�`�����l���j�̓ǂݎ�� */
 	  pcm->sR[n] = (double)data / 32768.0; /* ���f�[�^��-1�ȏ�1�����͈̔͂ɐ��K������ */
 	}
