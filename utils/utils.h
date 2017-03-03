@@ -8,6 +8,36 @@
 #ifndef UTILS_H_
 #define UTILS_H_
 
+#ifndef ASSERT_H_
+#define ASSERT_H_
+#include <assert.h>
+#endif
+
+#ifndef STRING_H_
+#define STRING_H_
+#include <string.h>
+#endif
+
+#ifndef STDIO_H_
+#define STDIO_H_
+#include <stdio.h>
+#endif
+
+#ifndef STDLIB_H_
+#define STDLIB_H_
+#include <stdlib.h>
+#endif
+
+#ifndef TIME_H_
+#define TIME_H_
+#include <time.h>
+#endif
+
+#ifndef LIMITS_H_
+#define LIMITS_H_
+#include <limits.h>
+#endif
+
 char* get_Time_Label(char* time_label) {
 
 //	char time_label[30];
@@ -65,5 +95,20 @@ char** str_split(char* a_str, const char a_delim)
 
     return result;
 }
+
+int get_random_integer(int max) {
+
+	//ref http://stackoverflow.com/questions/17846212/generate-a-random-number-between-1-and-10-in-c
+	int randomnumber;
+
+	srand(time(NULL));
+
+	randomnumber = rand() % max;
+
+
+	return randomnumber;
+
+}//get_random_integer(int)
+
 
 #endif /* UTILS_H_ */

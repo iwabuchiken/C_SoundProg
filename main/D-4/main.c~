@@ -8,6 +8,10 @@
 
 int main() {
 
+	FILE	*fp;
+
+
+
 	printf("done");
 
 	return 0;
