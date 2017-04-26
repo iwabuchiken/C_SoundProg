@@ -188,7 +188,7 @@ void stereo_wave_read(STEREO_PCM *pcm, char *file_name)
 	long data_chunk_size;
 	short data;
 
-	char tmp[10];	// display data_chunk_ID
+//	char tmp[10];	// display data_chunk_ID
 //	char tmp[5];	// display data_chunk_ID
 
 	fp = fopen(file_name, "rb");
@@ -217,7 +217,7 @@ void stereo_wave_read(STEREO_PCM *pcm, char *file_name)
 	printf("[%s:%d] riff_chunk_ID[3] => %c (%d)\n", __FILE__, __LINE__, riff_chunk_ID[3], riff_chunk_ID[3]);
 //	printf("[%s:%d] riff_chunk_ID[4] => %c (%d)\n", __FILE__, __LINE__, riff_chunk_ID[4], riff_chunk_ID[4]);
 
-	printf("[%s:%d] riff_chunk_size => %l\n", __FILE__, __LINE__, riff_chunk_size);
+//	printf("[%s:%d] riff_chunk_size => %l\n", __FILE__, __LINE__, riff_chunk_size);
 //	printf("[%s:%d] riff_chunk_size => %d\n", __FILE__, __LINE__, riff_chunk_size);
 //	printf("[%s:%d] riff_chunk_size => %d\n", __FILE__, __LINE__, riff_chunk_size);
 

@@ -28,7 +28,7 @@ gcc main.c
 
 int main() {
 
-	FILE	*fp;
+//	FILE	*fp;
 
 	int max = 10;
 
