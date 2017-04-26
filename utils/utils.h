@@ -55,11 +55,51 @@ char** str_split_V3(char* a_str, const char a_delim, int* num);
  * functions
  *
 *********************************************************/
+//char* get_Time_Label(char* time_label) {
+//
+////	char time_label[30];
+//
+//	sprintf(time_label, "%s", "2015-08");
+//
+//	return time_label;
+//
+//}
+
+/********************************************************
+ *
+ * from: C:\WORKS_2\WS\Eclipse_Neon\Sound_Programming_in_C\src\D-4\utils\utils.h
+ * at: 2017/04/27 02:06:39
+ *
+*********************************************************/
+/****************************
+ *	@param time_label ---> char[14]
+ *
+ *	@return
+ *	20161217_0112 (13 + 1 = 14 length)
+ *
+ *****************************/
 char* get_Time_Label(char* time_label) {
+
+	//ref http://stackoverflow.com/questions/5141960/get-the-current-time-in-c
+	time_t rawtime;
+	struct tm * timeinfo;
+
+	time ( &rawtime );
+	timeinfo = localtime ( &rawtime );
+
+	sprintf(time_label, "%04d%02d%02d_%02d%02d%02d",
+//	sprintf(time_label, "[%04d%02d%02d_%02d%02d%02d]",
+//			timeinfo->tm_year,
+			timeinfo->tm_year + 1900,
+			timeinfo->tm_mon + 1,
+			timeinfo->tm_mday,
+			timeinfo->tm_hour,
+			timeinfo->tm_min,
+			timeinfo->tm_sec);
 
 //	char time_label[30];
 
-	sprintf(time_label, "%s", "2015-08");
+//	sprintf(time_label, "%s", "2015-08");
 
 	return time_label;
 
