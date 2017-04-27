@@ -292,6 +292,140 @@ char* basename(char* full_path, const char path_delimiter) {
 
 }//basename(char* full_path, const char path_delimiter)
 
+char* dirname(char* full_path,  const char path_delimiter) {
+
+	int len_1 = strlen(full_path);
+
+	char* bname = basename(full_path, '\\');
+
+	int len_2 = strlen(bname);
+
+	int len_3 = len_1 - len_2;
+
+	/**********************
+
+		validate
+
+	**********************/
+	if (len_3 < 1) {
+
+		printf("[%s:%d] seems no dir path... : '%s'\n", basename(__FILE__, '\\'), __LINE__, full_path);
+
+		return full_path;
+
+	} else {
+
+		printf("[%s:%d] full path = '%s'\n", basename(__FILE__, '\\'), __LINE__, full_path);
+		printf("[%s:%d] base name = '%s'\n", basename(__FILE__, '\\'), __LINE__, bname);
+
+
+	}
+
+	/**********************
+
+		build dirpath
+
+	**********************/
+	char* dpath = malloc(sizeof(char) * (len_3 + 1));
+
+	// omit separator char
+//	printf("[%s:%d] full_path[len_3 - 1] => '%c'\n",
+//			basename(__FILE__, '\\'), __LINE__, full_path[len_3 - 1]);
+
+	if (full_path[len_3 - 1] == '\\') {
+
+		strncpy(dpath, full_path, len_3 - 1);
+
+		dpath[len_3 - 1] = '\0';
+
+	} else {//if (full_path[len_3 - 1] == '\\')
+
+		strncpy(dpath, full_path, len_3);
+
+		dpath[len_3] = '\0';
+
+	}//if (full_path[len_3 - 1] == '\\')
+
+
+//	strncpy(dpath, full_path, len_3);
+
+	// ending char
+//	dpath[len_3] = '\0';
+
+	/**********************
+
+		free variables
+
+	**********************/
+	free(bname);
+
+	/**********************
+
+		return
+
+	**********************/
+	return dpath;
+
+
+//	char *tmp = malloc((sizeof(char) * (strlen(full_path) + 1)));
+//	strcpy(tmp, full_path);
+//
+//	char **tokens;
+//
+//	int num;
+//
+////	printf("full_path = [%s] (%d)\n\n", full_path, strlen(full_path));
+//
+//	tokens = str_split_V3(tmp, path_delimiter, &num);
+//
+//	printf("[%s:%d] num => '%d'\n", basename(__FILE__, '\\'), __LINE__, num);
+//
+//	printf("[%s:%d] full_path => '%s'\n", basename(__FILE__, '\\'), __LINE__, full_path);
+//
+//	//ref strlen http://simd.jugem.jp/?eid=123
+//	int string_len = strlen(full_path);
+////	int string_len = sizeof(full_path) / sizeof(char);
+////
+//	printf("[%s:%d] string length => %d\n", basename(__FILE__, '\\'), __LINE__, string_len);
+//
+//
+////	printf("[%s:%d] num => %d\n", __FILE__, __LINE__, num);
+//
+//	///////////////////////////////
+//	//
+//	// basename
+//	//
+//	 ///////////////////////////////
+//	char * bname = malloc(sizeof(char) * (strlen(tokens[num - 1]) + 1));
+////	char * bname = malloc(sizeof(char) * tokens[num - 1] + 1);
+//
+//	strcpy(bname, tokens[num - 1]);
+//
+////	printf("[%s:%d] bname => %s\n", __FILE__, __LINE__, bname);
+//
+//	///////////////////////////////
+//	//
+//	// free
+//	//
+//	 ///////////////////////////////
+//	int i;
+//
+//	for (i = 0; i < num - 1; ++i) {
+//
+//		free(tokens[i]);
+//
+//	}
+//
+//	///////////////////////////////
+//	//
+//	// return
+//	//
+//	 ///////////////////////////////
+//	return bname;
+
+}//dirname(char* full_path,  const char path_delimiter)
+
+
 /********************************************************
  *
  * str_split_V3(char* a_str, const char a_delim, int* num)

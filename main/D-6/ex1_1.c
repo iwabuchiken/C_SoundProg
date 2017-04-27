@@ -30,8 +30,18 @@ int main(void)
 
    printf("[%s:%d] fname_dst => '%s'\n", basename(__FILE__, '\\'), __LINE__, fname_dst);
 
+   /**********************
 
-  mono_wave_write(&pcm1, fname_dst); /* WAVEファイルにモノラルの音データを出力する */
+	get: dirname
+
+	**********************/
+   char* dpath = dirname(__FILE__, '\\');
+
+   printf("[%s:%d] dpath => '%s'\n", basename(__FILE__, '\\'), __LINE__, dpath);
+
+
+
+//  mono_wave_write(&pcm1, fname_dst); /* WAVEファイルにモノラルの音データを出力する */
 //  mono_wave_write(&pcm1, "b.wav"); /* WAVEファイルにモノラルの音データを出力する */
   //=> with "b.wav" ---> the file gets created at "C:\WORKS_2\WS\Eclipse_Luna\C_SoundProg"
   
