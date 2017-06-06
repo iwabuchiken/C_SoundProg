@@ -23,6 +23,9 @@ void absolutize_Sound_Data();
 void sine_Squared();
 void sine_P4();
 void volume_Down_By_Percent(int nominator);
+int volume_Down_PCMData_By_Percent(MONO_PCM* pcm0, int nominator);
+void absolutize_MONO_PCM(MONO_PCM* pcm);
+int absolutize_MONO_PCM__2PCMs(MONO_PCM* pcm1, MONO_PCM* pcm2);
 
 /********************************************************
  *
@@ -181,6 +184,126 @@ void test_ex1_x() {
 
 }//test_ex1_x()
 
+/**********************
+
+	@return
+		-1		=> Nominator larger than 1000
+		1		=> Done
+
+	@param
+		nominator	=> 0 ~ 1000 (0.0% ~ 100.0%)
+
+**********************/
+int volume_Down_PCMData_By_Percent(MONO_PCM* pcm0, int nominator) {
+
+	/**********************
+
+		validate
+
+	**********************/
+	if (nominator > 1000) {
+
+		printf("[%s:%d] nominator > 1000 ---> needs to be <= 1000\n",
+				basename(__FILE__, '\\'), __LINE__);
+
+		return -1;
+
+	}//if (nominator > 100)
+
+	/**********************
+
+		Operatons
+
+	**********************/
+	int len = pcm0->length;
+
+	int n;
+
+	for (n = 0; n < len; n++)
+	{
+
+		//ref fabs https://stackoverflow.com/questions/20956352/how-to-get-absolute-value-from-double-c-language "answered Jan 6 '14 at 18:08"
+		pcm0->s[n] = pcm0->s[n] * (nominator / 1000.0);
+
+	}
+
+	return 1;
+
+}//int volume_Down_PCMData_By_Percent(MONO_PCM* pcm0, int nominator)
+
+/**********************
+
+	<process>
+		1. Destructive
+
+**********************/
+void absolutize_MONO_PCM(MONO_PCM* pcm) {
+
+	int len = pcm->length;
+
+	int n;
+
+	for (n = 0; n < len; n++)
+	{
+
+		//ref fabs https://stackoverflow.com/questions/20956352/how-to-get-absolute-value-from-double-c-language "answered Jan 6 '14 at 18:08"
+		pcm->s[n] = fabs(pcm->s[n]);
+
+	}
+
+	return;
+
+}//MONO_PCM* absolutize_MONO_PCM(MONO_PCM* pcm)
+
+/**********************
+
+	@return
+		1. 1	=> Done
+		2. -1	=> Lengths don't match to each other
+
+	@param
+	pcm1		=> Source
+	pcm2		=> Dest
+
+**********************/
+int absolutize_MONO_PCM__2PCMs(MONO_PCM* pcm1, MONO_PCM* pcm2) {
+
+	/**********************
+
+		validate
+
+	**********************/
+	if (pcm1->length != pcm2->length) {
+
+		printf("[%s:%d] lengths don't match ==> %d and %d\n",
+				basename(__FILE__, '\\'), __LINE__,
+				pcm1->length, pcm2->length);
+
+		return -1;
+
+	}//if (pcm1.length != pcm2.length)
+
+	/**********************
+
+		operations
+
+	**********************/
+	int len = pcm1->length;
+
+	int n;
+
+	for (n = 0; n < len; n++)
+	{
+
+		//ref fabs https://stackoverflow.com/questions/20956352/how-to-get-absolute-value-from-double-c-language "answered Jan 6 '14 at 18:08"
+		pcm2->s[n] = pcm1->s[n];
+
+	}
+
+	return 1;
+
+}//MONO_PCM* absolutize_MONO_PCM(MONO_PCM* pcm)
+
 /********************************************************
  *
  * void volume_Down_By_Percent(int nominator)
@@ -189,7 +312,6 @@ void test_ex1_x() {
  *		1. (original volume) * (nominator / 100) ---> scale down
  *
 *********************************************************/
-
 void volume_Down_By_Percent(int nominator) {
 
 	/**********************
@@ -197,9 +319,13 @@ void volume_Down_By_Percent(int nominator) {
 		validate
 
 	**********************/
-	if (nominator > 100) {
+	int nominator_max = 1000;
 
-		printf("[%s:%d] nominator > 100 ---> needs to be <= 100\n", basename(__FILE__, '\\'), __LINE__);
+	if (nominator > nominator_max) {
+//	if (nominator > 100) {
+
+		printf("[%s:%d] nominator > %d (is %d) ---> needs to be <= %d\n",
+				basename(__FILE__, '\\'), __LINE__, nominator_max, nominator, nominator_max);
 
 		return;
 
@@ -219,13 +345,22 @@ void volume_Down_By_Percent(int nominator) {
 	pcm1.length = pcm0.length; /* 音データの長さ */
 	pcm1.s = calloc(pcm1.length, sizeof(double)); /* メモリの確保 */
 
+	/**********************
+		Volume down
+	**********************/
+	volume_Down_PCMData_By_Percent(&pcm0, nominator);
+//	volume_Down_PCMData_By_Percent(pcm0, nominator);
 
 
+	/**********************
+		copy : pcm data
+	**********************/
 	for (n = 0; n < pcm1.length; n++)
 	{
 
 		//ref fabs https://stackoverflow.com/questions/20956352/how-to-get-absolute-value-from-double-c-language "answered Jan 6 '14 at 18:08"
-		pcm1.s[n] = powl(pcm0.s[n] * (nominator / 100.0), power);
+		pcm1.s[n] = powl(pcm0.s[n], power);
+//		pcm1.s[n] = powl(pcm0.s[n] * (nominator / 100.0), power);
 //		pcm1.s[n] = powl(pcm0.s[n] * (nominator / 100.0), 4);
 //		pcm1.s[n] = pcm0.s[n] * (nominator / 100.0);
 //		pcm1.s[n] = powl(pcm0.s[n], 4);
@@ -532,6 +667,7 @@ void absolutize_Sound_Data() {
 	pcm1.bits = pcm0.bits; /* 量子化精度 */
 	pcm1.length = pcm0.length; /* 音データの長さ */
 	pcm1.s = calloc(pcm1.length, sizeof(double)); /* メモリの確保 */
+
 	for (n = 0; n < pcm1.length; n++)
 	{
 
@@ -546,7 +682,7 @@ void absolutize_Sound_Data() {
 	char fname_trunk_full[50];
 
 	//  char* fname_trunk = "b";
-	char* fname_trunk = "tink-2";	//=> file WAS generated (in this directory)
+	char* fname_trunk = "tink-2.Absolute";	//=> file WAS generated (in this directory)
 //	char* fname_trunk = "main\\D-6\\tink-2";	//=> file WAS generated (in this directory)
 	//  char* fname_trunk = "\\main\\D-6\\b";	//=> file not generated (in this directory)
 	//  char* fname_trunk = "..\\main\\D-6\\b";	//=> file not generated (in this directory)
@@ -596,7 +732,8 @@ void absolutize_Sound_Data() {
 int main(void)
 {
 
-	volume_Down_By_Percent(99);
+	volume_Down_By_Percent(999);
+//	volume_Down_By_Percent(99);
 //	sine_P4();
 //	sine_Cube();
 //	sine_Squared();
