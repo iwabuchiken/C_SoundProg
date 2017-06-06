@@ -2,6 +2,10 @@
 #include <stdlib.h>
 //#include <cstdio>
 
+#ifndef MATH_H_
+#define MATH_H_
+#include <math.h>
+#endif
 
 //#include "wave.h"
 #include "../../utils/utils.h"
@@ -10,7 +14,14 @@
 
 int write_PCMData_to_File(void);
 //int write_PCMData_to_File(MONO_PCM pcm);
+void absolutize_Sound_Data();
+void sine_Squared();
 
+/********************************************************
+ *
+ * functions
+ *
+*********************************************************/
 int write_PCMData_to_File() {
 
 	printf("[%s:%d] writing...\n", basename(__FILE__, '\\'), __LINE__);
@@ -163,10 +174,88 @@ void test_ex1_x() {
 
 }//test_ex1_x()
 
+void sine_Squared() {
+
+}//void sine_Squared()
+
+void absolutize_Sound_Data() {
+
+	MONO_PCM pcm0, pcm1;
+	int n;
+
+	//  mono_wave_read(&pcm0, "a.wav"); /* WAVEファイルからモノラルの音データを入力する */
+	mono_wave_read(&pcm0, "C:\\WORKS_2\\WS\\Eclipse_Luna\\C_SoundProg\\main\\D-6\\a.wav");	//=> working
+
+	pcm1.fs = pcm0.fs; /* 標本化周波数 */
+	pcm1.bits = pcm0.bits; /* 量子化精度 */
+	pcm1.length = pcm0.length; /* 音データの長さ */
+	pcm1.s = calloc(pcm1.length, sizeof(double)); /* メモリの確保 */
+	for (n = 0; n < pcm1.length; n++)
+	{
+
+		//ref fabs https://stackoverflow.com/questions/20956352/how-to-get-absolute-value-from-double-c-language "answered Jan 6 '14 at 18:08"
+		pcm1.s[n] = fabs(pcm0.s[n]); /* 音データのコピー */
+//	  pcm1.s[n] = pcm0.s[n]; /* 音データのコピー */
+
+	}
+
+	char fname_dst[100];
+
+	char fname_trunk_full[50];
+
+	//  char* fname_trunk = "b";
+	char* fname_trunk = "tink-2";	//=> file WAS generated (in this directory)
+//	char* fname_trunk = "main\\D-6\\tink-2";	//=> file WAS generated (in this directory)
+	//  char* fname_trunk = "\\main\\D-6\\b";	//=> file not generated (in this directory)
+	//  char* fname_trunk = "..\\main\\D-6\\b";	//=> file not generated (in this directory)
+
+	char* dirpath = "main\\D-6\\sound";
+
+	sprintf(fname_trunk_full, "%s\\%s", dirpath, fname_trunk);
+
+	char* fname_ext = "wav";
+
+	 get_file_name_with_time_label(fname_dst, fname_trunk_full, fname_ext);
+//	 get_file_name_with_time_label(fname_dst, fname_trunk, fname_ext);
+
+	 printf("[%s:%d] fname_dst => '%s'\n", basename(__FILE__, '\\'), __LINE__, fname_dst);
+
+	 /**********************
+
+		get: dirname
+
+		**********************/
+	 char* dpath = dirname(__FILE__, '\\');
+
+	 printf("[%s:%d] dpath => '%s'\n", basename(__FILE__, '\\'), __LINE__, dpath);
+
+
+
+	mono_wave_write(&pcm1, fname_dst); /* WAVEファイルにモノラルの音データを出力する */
+	//  mono_wave_write(&pcm1, "b.wav"); /* WAVEファイルにモノラルの音データを出力する */
+	//=> with "b.wav" ---> the file gets created at "C:\WORKS_2\WS\Eclipse_Luna\C_SoundProg"
+
+	/**********************
+
+		TINK-2
+
+	**********************/
+
+	/********************************************************
+	 *
+	 * free
+	 *
+	*********************************************************/
+	free(pcm0.s); /* メモリの解放 */
+	free(pcm1.s); /* メモリの解放 */
+
+}//void absolutize_Sound_Data()
+
 int main(void)
 {
 
-	write_PCMData_to_File();
+	absolutize_Sound_Data();
+//	write_PCMData_to_File();
 //	test_ex1_x();
 
 //  MONO_PCM pcm0, pcm1;
