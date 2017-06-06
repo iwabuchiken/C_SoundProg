@@ -209,6 +209,8 @@ void volume_Down_By_Percent(int nominator) {
 	MONO_PCM pcm0, pcm1;
 	int n;
 
+	int power = 4;	// powl(X, power)
+
 	//  mono_wave_read(&pcm0, "a.wav"); /* WAVEファイルからモノラルの音データを入力する */
 	mono_wave_read(&pcm0, "C:\\WORKS_2\\WS\\Eclipse_Luna\\C_SoundProg\\main\\D-6\\a.wav");	//=> working
 
@@ -216,11 +218,15 @@ void volume_Down_By_Percent(int nominator) {
 	pcm1.bits = pcm0.bits; /* 量子化精度 */
 	pcm1.length = pcm0.length; /* 音データの長さ */
 	pcm1.s = calloc(pcm1.length, sizeof(double)); /* メモリの確保 */
+
+
+
 	for (n = 0; n < pcm1.length; n++)
 	{
 
 		//ref fabs https://stackoverflow.com/questions/20956352/how-to-get-absolute-value-from-double-c-language "answered Jan 6 '14 at 18:08"
-		pcm1.s[n] = pcm0.s[n] * (nominator / 100.0);
+		pcm1.s[n] = powl(pcm0.s[n] * (nominator / 100.0), power);
+//		pcm1.s[n] = powl(pcm0.s[n] * (nominator / 100.0), 4);
 //		pcm1.s[n] = pcm0.s[n] * (nominator / 100.0);
 //		pcm1.s[n] = powl(pcm0.s[n], 4);
 
@@ -238,7 +244,9 @@ void volume_Down_By_Percent(int nominator) {
 
 	char* dirpath = "main\\D-6\\sound";	// 14 chars
 
-	sprintf(fname_trunk_full, "%s\\%s_nomi-%d", dirpath, fname_trunk, nominator);
+	sprintf(fname_trunk_full,
+			"%s\\%s_nomi-%d+Power-%d",
+			dirpath, fname_trunk, nominator, power);
 //	sprintf(fname_trunk_full, "%s\\%s", dirpath, fname_trunk);
 
 	char* fname_ext = "wav";
