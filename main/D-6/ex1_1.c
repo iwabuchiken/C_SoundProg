@@ -181,7 +181,30 @@ void test_ex1_x() {
 
 }//test_ex1_x()
 
+/********************************************************
+ *
+ * void volume_Down_By_Percent(int nominator)
+ *
+ *	@ job
+ *		1. (original volume) * (nominator / 100) ---> scale down
+ *
+*********************************************************/
+
 void volume_Down_By_Percent(int nominator) {
+
+	/**********************
+
+		validate
+
+	**********************/
+	if (nominator > 100) {
+
+		printf("[%s:%d] nominator > 100 ---> needs to be <= 100\n", basename(__FILE__, '\\'), __LINE__);
+
+		return;
+
+	}//if (nominator > 100)
+
 
 	MONO_PCM pcm0, pcm1;
 	int n;
@@ -197,11 +220,9 @@ void volume_Down_By_Percent(int nominator) {
 	{
 
 		//ref fabs https://stackoverflow.com/questions/20956352/how-to-get-absolute-value-from-double-c-language "answered Jan 6 '14 at 18:08"
-		pcm1.s[n] = powl(pcm0.s[n], 4);
-//		pcm1.s[n] = pcm0.s[n] * pcm0.s[n] * pcm0.s[n];	// sin^2
-//		pcm1.s[n] = pcm0.s[n] * pcm0.s[n];	// sin^2
-//		pcm1.s[n] = fabs(pcm0.s[n]); /* 音データのコピー */
-//	  pcm1.s[n] = pcm0.s[n]; /* 音データのコピー */
+		pcm1.s[n] = pcm0.s[n] * (nominator / 100.0);
+//		pcm1.s[n] = pcm0.s[n] * (nominator / 100.0);
+//		pcm1.s[n] = powl(pcm0.s[n], 4);
 
 	}
 
@@ -210,14 +231,15 @@ void volume_Down_By_Percent(int nominator) {
 	char fname_trunk_full[50];
 
 	//  char* fname_trunk = "b";
-	char* fname_trunk = "tink-5_P5";	// 14 chars	//=> file WAS generated (in this directory)
+	char* fname_trunk = "SEG-1_volume-down";	// 14 chars	//=> file WAS generated (in this directory)
 //	char* fname_trunk = "main\\D-6\\tink-2";	//=> file WAS generated (in this directory)
 	//  char* fname_trunk = "\\main\\D-6\\b";	//=> file not generated (in this directory)
 	//  char* fname_trunk = "..\\main\\D-6\\b";	//=> file not generated (in this directory)
 
 	char* dirpath = "main\\D-6\\sound";	// 14 chars
 
-	sprintf(fname_trunk_full, "%s\\%s", dirpath, fname_trunk);
+	sprintf(fname_trunk_full, "%s\\%s_nomi-%d", dirpath, fname_trunk, nominator);
+//	sprintf(fname_trunk_full, "%s\\%s", dirpath, fname_trunk);
 
 	char* fname_ext = "wav";
 
@@ -254,6 +276,14 @@ void volume_Down_By_Percent(int nominator) {
 	*********************************************************/
 	free(pcm0.s); /* メモリの解放 */
 	free(pcm1.s); /* メモリの解放 */
+
+	/**********************
+
+		report
+
+	**********************/
+	printf("[%s:%d] volume_Down_By_Percent(int nominator) => done\n", basename(__FILE__, '\\'), __LINE__);
+
 
 }//void volume_Down_By_Percent(int nominator)
 
@@ -558,7 +588,8 @@ void absolutize_Sound_Data() {
 int main(void)
 {
 
-	sine_P4();
+	volume_Down_By_Percent(99);
+//	sine_P4();
 //	sine_Cube();
 //	sine_Squared();
 //	absolutize_Sound_Data();
