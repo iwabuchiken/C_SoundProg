@@ -362,6 +362,7 @@ void volume_Down_By_Percent(int nominator) {
 	{
 
 		//ref fabs https://stackoverflow.com/questions/20956352/how-to-get-absolute-value-from-double-c-language "answered Jan 6 '14 at 18:08"
+		//ref http://www.c-tipsref.com/reference/math/pow.html
 		pcm1.s[n] = powl(pcm0.s[n], power);
 //		pcm1.s[n] = powl(pcm0.s[n] * (nominator / 100.0), power);
 //		pcm1.s[n] = powl(pcm0.s[n] * (nominator / 100.0), 4);
