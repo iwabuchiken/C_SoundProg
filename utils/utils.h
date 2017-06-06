@@ -171,7 +171,10 @@ int get_random_integer(int max) {
 
 // from: /Sound_Programming_in_C/src/D-4/utils/utils.h
 // at: 2017/04/27 00:45:30
-
+//
+//	<Usage>
+//		"abc", "dat"	=> returns "abc.201706061319.dat"
+//
 ///////////////////////
 char* get_file_name_with_time_label
 (char fname[], char* fname_trunk, char* fname_ext) {
@@ -334,8 +337,10 @@ char* dirname(char* full_path,  const char path_delimiter) {
 
 	if (full_path[len_3 - 1] == '\\') {
 
+		//ref strncpy http://edu.clipper.co.jp/pg-2-42.html
 		strncpy(dpath, full_path, len_3 - 1);
 
+//		dpath[len_3] = '\0';
 		dpath[len_3 - 1] = '\0';
 
 	} else {//if (full_path[len_3 - 1] == '\\')

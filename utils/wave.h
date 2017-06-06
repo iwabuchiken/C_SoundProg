@@ -10,10 +10,15 @@
 
 typedef struct
 {
-	int fs; /* �W�{����g�� */
-	int bits; /* �ʎq�����x */
-	int length; /* ���f�[�^�̒��� */
-	double *s; /* ���f�[�^ */
+	int fs; /* 標本化周波数 */
+	int bits; /* 量子化精度 */
+	int length; /* 音データの長さ */
+	double *s; /* 音データ */
+
+	//	int fs; /* �W�{����g�� */
+//	int bits; /* �ʎq�����x */
+//	int length; /* ���f�[�^�̒��� */
+//	double *s; /* ���f�[�^ */
 } MONO_PCM;
 
 typedef struct
