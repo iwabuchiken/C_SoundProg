@@ -9,7 +9,8 @@ ref : http://aidiary.hatenablog.com/entry/20110607/1307449007
 ###############################################
 import sys
 sys.path.append('.')
-import libs.libs as lib
+from libs.libs import *
+# import libs.libs as lib
 # from libs.libs import *		#=> in 'libs' subdirectory --> see : https://stackoverflow.com/questions/1260792/import-a-file-from-a-subdirectory 'community wiki'
 							#=> ref : http://qiita.com/Usek/items/86edfa0835292c80fff5
 # from libs import *		#=> in 'libs' subdirectory --> see : https://stackoverflow.com/questions/1260792/import-a-file-from-a-subdirectory 'community wiki'
@@ -22,8 +23,6 @@ import libs.wablibs as wl
 import getopt
 import os
 import inspect
-
-
 
 ###############################################
 import wave
@@ -89,15 +88,13 @@ def play (data, fs, bit):
 	stream.close()
 	p.terminate()
 
-if __name__ == "__main__" :
-	
-	
-	
+def exec_1():
+
 	freqList = [262, 294, 330, 349, 392, 440, 494, 523]  # ドレミファソラシド
-	
+
 	wflist = []
 	
-	timelabel = lib.get_TimeLabel_Now()
+	timelabel = get_TimeLabel_Now()
 	
 	for f in freqList:
 
@@ -110,39 +107,131 @@ if __name__ == "__main__" :
 # 		data = createSineWave(1.0, f, 8000.0, 1.0)
 		
 		fname = "test_2.sinewave-%d.%s.wav" % (f, timelabel)
-#		 fname = "test_2.sinewave-%d.%s.wav" % (f, lib.get_TimeLabel_Now())
+#		 fname = "test_2.sinewave-%d.%s.wav" % (f, get_TimeLabel_Now())
 		
 		wf = wl.WaveFile(fname)
 		
 		wf.samplewidth = 8000
 		
-		wf.bindata = bindata
+		wf.binwave = bindata
 		wf.analogdata = analogdata
-# 		wf.binwave = data
-		
-# 		print "[%s:%d] fname => '%s' (nchannels = %d / samplewidth = %f)" \
-# 				% (lib.thisfile(), lib.linenum(), wf.fname,\
-# 				wf.nchannels, wf.samplewidth)
 		
 		wflist.append(wf)
 		
-#		 wl.save_WaveFile(fname, data)
-		
-#		 wl.save_WaveFile(fname)
-#		 save_WaveFile(fname)
-		
-#		 play(data, 8000, 16)
-
 	for wf in wflist :
 		
  		print "[%s:%d] fname => '%s' (nchannels = %d / samplewidth = %f)" \
-			% (lib.thisfile(), lib.linenum(), wf.fname,\
+			% (thisfile(), linenum(), wf.fname,\
 			wf.nchannels, wf.samplewidth)
 		
-		print "[%s:%d] data => " % (lib.thisfile(), lib.linenum())
-		print wf.bindata[0:10]
+		print "[%s:%d] data => " % (thisfile(), linenum())
+		print wf.binwave[0:10]
 		print wf.analogdata[0:10]
+#]]def exec_1()
+	
+def exec_2():
+	
+	freqList = [262, 294, 330, 349, 392, 440, 494, 523]  # ドレミファソラシド
+	
+	timelabel = get_TimeLabel_Now()
+
+	"""振幅A、基本周波数f0、サンプリング周波数 fs、
+	長さlength秒の正弦波を作成して返す"""
+	#createSineWave (A, f0, fs, length)
+	A = 1.0
+	f0 = freqList[0]
+	fs = 8000.0
+	length = 1.0
+	
+	(analogdata, bindata) = createSineWave_2(A, f0, fs, length)
+# 	(analogdata, bindata) = createSineWave_2(1.0, f[0], 8000.0, 1.0)
+	
+	dpath = "audio"
+	
+	fname = "test_2.sinewave-%d.%s.wav" % (f0, timelabel)
+	
+	fpath = "%s/%s" % (dpath, fname)
+	
+	wf = wl.WaveFile(fname)
+		
+	wf.nchannels  = 1
+	wf.samplewidth	= fs
+# 	wf.framerate=framerate
+# 	wf.nframes=nframes
+# 	wf.comptype   = wavefile_src.comptype
+# 	wf.compname   = wavefile_src.compname
+	wf.analogdata   = analogdata
+	wf.bindata = bindata
 
 
+	for i in range(0, 10) :
+		
+		print "analogdata[%d] = %f" % (i, analogdata[i])
+#[[def exec_2()
+
+def exec_3():
+	
+	'''###################
+		Build wavefile : source
+	   #####################'''
+	freqList = [262, 294, 330, 349, 392, 440, 494, 523]  # ドレミファソラシド
+	
+	timelabel = get_TimeLabel_Now()
+
+	"""振幅A、基本周波数f0、サンプリング周波数 fs、
+	長さlength秒の正弦波を作成して返す"""
+	#createSineWave (A, f0, fs, length)
+	A = 1.0
+	f0 = freqList[0]
+	fs = 8000.0
+	length = 1.0
+	
+	(analogdata, bindata) = createSineWave_2(A, f0, fs, length)
+# 	(analogdata, bindata) = createSineWave_2(1.0, f[0], 8000.0, 1.0)
+	
+	dpath = "audio"
+	
+	fname = "test_2.sinewave-%d.%s.wav" % (f0, timelabel)
+	
+	fpath = "%s/%s" % (dpath, fname)
+	
+	wf = wl.WaveFile(fname)
+		
+	wf.nchannels  = 1
+	wf.samplewidth	= fs
+# 	wf.framerate=framerate
+# 	wf.nframes=nframes
+# 	wf.comptype   = wavefile_src.comptype
+# 	wf.compname   = wavefile_src.compname
+	wf.analogdata   = analogdata
+	wf.bindata = bindata
+
+	print "[%s:%d] wf =>" % (thisfile(), linenum())
+	
+	for i in range(0, 10) :
+		
+		print "analogdata[%d] = %f" % (i, analogdata[i])
+
+	'''###################
+		copy
+	   #####################'''
+	wf_2 = wl.copy_WaveFile(wf)
+# 	wf_2 = wablibs.copy_WaveFile(wf)
+
+	### report
+	for i in range(0, 10) :
+		
+		print "wf_2.analogdata[%d] = %f" % (i, wf_2.analogdata[i])
+	
+
+
+#[[def exec_3()
+
+
+if __name__ == "__main__" :
+	
+	exec_3()
+# 	exec_2()
+# 	exec_1()
 
 print "yes"
