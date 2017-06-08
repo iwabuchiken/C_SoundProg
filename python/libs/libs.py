@@ -4,6 +4,7 @@ import os
 #ref https://stackoverflow.com/questions/415511/how-to-get-current-time-in-python "answered Jan 6 '09 at 4:59"
 from time import gmtime, strftime, localtime, time
 from __builtin__ import str
+from sympy.physics.vector.printing import params
 
 def linenum(depth=0):
 #     print "line"
@@ -71,6 +72,76 @@ def get_opt(arg_ary):
             elif elem == '--SAVE_IMAGE_GO' :
                 
                 result.append(('SAVE_IMAGE_GO', ''))
+    
+    return result
+
+def get_opt_2(arg_ary, keychars):
+    
+#     print "[%s:%d] args =>" % (thisfile(), linenum())
+    
+#     print arg_ary
+    
+    # validate
+    if len(arg_ary) < 1 :
+        
+        print "[%s:%d] no args" % (thisfile(), linenum())
+        
+        return (None, None)
+    
+    # return tuple
+    result = []
+    # loop
+    for elem in arg_ary :
+        
+        for char in list(keychars) :
+            
+            if elem.startswith('-' + char) and len(elem) > 2 :
+#             if elem.startswith(char) and len(elem) > 2 :
+#             if elem.startswith(char) and len(elem) > 2 :
+                result.append(('-' + char, elem[2:]))
+            
+            elif elem.startswith('--') and len(elem) > 2 :
+                result.append((elem[2:], ''))
+             
+#             if elem == '--PLOT_GO' : result.append(('PLOT_GO', ''))
+                
+            #ref append https://stackoverflow.com/questions/1878470/add-tuple-to-list-of-tuples-in-python
+            #ref slice http://www.pythonweb.jp/tutorial/string/index11.html
+                
+                
+#         #ref https://www.tutorialspoint.com/python/string_startswith.htm
+#         if elem.startswith('-E') and len(elem) > 2 :
+#             
+#             #ref append https://stackoverflow.com/questions/1878470/add-tuple-to-list-of-tuples-in-python
+#             #ref slice http://www.pythonweb.jp/tutorial/string/index11.html
+#             result.append(('-E', elem[2:]))
+#     
+#         elif elem.startswith('-s') and len(elem) > 2 :
+#             
+#             result.append(('-s', elem[2:]))
+#     
+#         elif elem.startswith('-e') and len(elem) > 2 :
+#             
+#             result.append(('-e', elem[2:]))
+#     
+#         elif elem.startswith('-t') and len(elem) > 2 :
+#             
+#             result.append(('-t', elem[2:]))
+#     
+#         elif elem.startswith('-V') and len(elem) > 2 :
+#             
+#             result.append(('-V', elem[2:]))
+#     
+#         elif elem.startswith('--') and len(elem) > 2 :
+#             
+#             if elem == '--PLOT_GO' :
+#                 
+#                 result.append(('PLOT_GO', ''))
+# #                 result.append('PLOT_GO')
+#     
+#             elif elem == '--SAVE_IMAGE_GO' :
+#                 
+#                 result.append(('SAVE_IMAGE_GO', ''))
     
     return result
 

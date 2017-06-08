@@ -9,6 +9,7 @@ ref : http://aidiary.hatenablog.com/entry/20110607/1307449007
 ###############################################
 import sys
 sys.path.append('.')
+# import libs.libs
 from libs.libs import *
 # import libs.libs as lib
 # from libs.libs import *		#=> in 'libs' subdirectory --> see : https://stackoverflow.com/questions/1260792/import-a-file-from-a-subdirectory 'community wiki'
@@ -298,11 +299,11 @@ def exec_4():
 
 #]]def exec_4()
 
-
-
 if __name__ == "__main__" :
 
-	exec_4()
+
+
+# 	exec_4()
 # 	exec_3()
 # 	exec_2()
 # 	exec_1()

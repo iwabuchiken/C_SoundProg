@@ -317,10 +317,23 @@ def exec_2():
 #]]def exec_4()
 #]]def exec_2()
 
+def test_1_GetOpt():
+
+	keychars = "v"
+	
+	print "[%s:%d] sys.argv =>" % (thisfile(), linenum())
+
+	print sys.argv
+	
+	result = get_opt_2(sys.argv, keychars)
+	
+	print result
+
 
 if __name__ == "__main__" :
 
-	exec_2()
+	test_1_GetOpt()
+# 	exec_2()
 # 	exec_1()
 
 	print
