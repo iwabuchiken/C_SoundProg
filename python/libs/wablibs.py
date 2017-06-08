@@ -21,18 +21,30 @@ from time import sleep
 '''
 def save_WaveFile(fname, binwave, comptype='NONE', compname='not compressed'):
     
-	w = wave.Wave_write(fname)
+    '''###################
+        validate: dir exists        
+    ###################'''
+    dpath = os.path.dirname(fname)
+    
+    #ref http://maku77.github.io/python/create-directory.html
+    if not os.path.exists(dpath) : 
+        os.makedirs(dpath, True)
+        print "[%s:%d] dir created => '%s'" % (thisfile(), linenum(), dpath)
+
+    
+    
+    w = wave.Wave_write(fname)
 # 	w = wave.Wave_write("output.wav")
     
-	p = (1, 2, 8000, len(binwave), comptype, compname)
+    p = (1, 2, 8000, len(binwave), comptype, compname)
 # 	p = (1, 2, 8000, len(binwave), 'NONE', 'not compressed')
     
     
-	w.setparams(p)
+    w.setparams(p)
     
-	w.writeframes(binwave)
+    w.writeframes(binwave)
     
-	w.close()
+    w.close()
 
 # def copy_WaveFile(binwave):
     
