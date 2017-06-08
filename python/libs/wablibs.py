@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 ###############################################
 import sys
 sys.path.append('.')
@@ -105,7 +107,8 @@ class WaveFile :
 #     def __init__(self, fname = '', bindata = None, nchannels = 1) :    #=> works
     def __init__(self, fname = '', dpath = '',\
                  bindata = None, nchannels=1,\
-                 samplewidth=8000, framerate=None, nframes=None,\
+                 samplewidth=8000, basefreq=None,\
+                 framerate=None, nframes=None,\
                  comptype=None, compname=None, analogdata = None) :
         
         self.fname = fname
@@ -119,6 +122,9 @@ class WaveFile :
         self.comptype   = comptype
         self.compname   = compname
         self.analogdata   = analogdata
+        
+        self.basefreq   = basefreq
+        
         
 
 def copy_WaveFile(wavefile_src, fname_new=''):
@@ -150,3 +156,101 @@ def copy_WaveFile(wavefile_src, fname_new=''):
     wf.analogdata   = wavefile_src.analogdata
 
     return wf
+'''###################
+ref : http://floor13.sakura.ne.jp/book03/book03.html
+#####################'''
+def createSineWave (A, f0, fs, length):
+    """�U��A�A��{���g��f0�A�T���v�����O���g�� fs�A
+    ����length�b�̐����g���쐬���ĕԂ�"""
+    data = []
+    radians = []
+    
+    # [-1.0, 1.0]�̏����l���������g���쐬
+    for n in np.arange(length * fs):  # n�̓T���v���C���f�b�N�X
+#     for n in arange(length * fs):  # n�̓T���v���C���f�b�N�X
+        
+        radian = 2 * np.pi * f0 * n / fs
+        
+        s = A * np.sin(radian)
+#         s = A * np.sin(2 * np.pi * f0 * n / fs)
+        # �U�����傫�����̓N���b�s���O
+        if s > 1.0:  s = 1.0
+        if s < -1.0: s = -1.0
+        
+        data.append(s)
+        
+        radians.append(radian)
+        
+    # [-32768, 32767]�̐����l�ɕϊ�
+    bindata = [int(x * 32767.0) for x in data]
+#    plot(data[0:100]); show()
+    # �o�C�i���ɕϊ�
+    bindata = struct.pack("h" * len(bindata), *bindata)  # list��*������ƈ����W�J�����
+    
+    return (data, bindata, radians)
+#     return (data, bindata)
+#     return data
+
+#]]createSineWave (A, f0, fs, length)
+
+def get_WaveFile__Sines (fname, A, f0, fs, length, phase = 1.0):
+    
+    '''###################
+        prep : data        
+    ###################'''
+    
+    
+    data = []
+    radians = []
+    
+    # [-1.0, 1.0]�̏����l���������g���쐬
+    for n in np.arange(length * fs):  # n�̓T���v���C���f�b�N�X
+#     for n in arange(length * fs):  # n�̓T���v���C���f�b�N�X
+        
+        radian = 2 * np.pi * f0 * n * phase / fs
+#         radian = 2 * np.pi * f0 * n / fs
+        
+        s = A * np.sin(radian)
+#         s = A * np.sin(2 * np.pi * f0 * n / fs)
+        # �U�����傫�����̓N���b�s���O
+        if s > 1.0:  s = 1.0
+        if s < -1.0: s = -1.0
+        
+        data.append(s)
+        
+        radians.append(radian)
+        
+    # [-32768, 32767]�̐����l�ɕϊ�
+    bindata = [int(x * 32767.0) for x in data]
+#    plot(data[0:100]); show()
+    # �o�C�i���ɕϊ�
+    bindata = struct.pack("h" * len(bindata), *bindata)  # list��*������ƈ����W�J�����
+    
+    '''###################
+        build : wavefile        
+    ###################'''
+    wf = WaveFile(fname)
+    
+    wf.nchannels  = 1
+    wf.samplewidth    = fs
+#     wf.framerate=framerate
+#     wf.nframes=nframes
+#     wf.comptype   = wavefile_src.comptype
+#     wf.compname   = wavefile_src.compname
+    wf.analogdata   = data
+    wf.bindata = bindata
+    wf.radians = radians
+
+    wf.basefreq = f0
+    
+    '''###################
+        return        
+    ###################'''
+    return wf
+    
+#     return (data, bindata, radians)
+#     return (data, bindata)
+#     return data
+
+#]]createSineWave (A, f0, fs, length)
+

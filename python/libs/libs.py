@@ -78,8 +78,10 @@ def get_opt(arg_ary):
 def get_opt_2(arg_ary, keychars):
     
 #     print "[%s:%d] args =>" % (thisfile(), linenum())
-    
+#       
 #     print arg_ary
+#      
+#     print list(keychars)
     
     # validate
     if len(arg_ary) < 1 :
@@ -93,15 +95,29 @@ def get_opt_2(arg_ary, keychars):
     # loop
     for elem in arg_ary :
         
+#         print "[%s:%d] elem = '%s'" % (thisfile(), linenum(), elem)
+            
+        #ref list http://nekoyukimmm.hatenablog.com/entry/2015/10/01/223148
         for char in list(keychars) :
             
-            if elem.startswith('-' + char) and len(elem) > 2 :
+#             print "[%s:%d] elem = '%s' / char = '%c'" % (thisfile(), linenum(), elem, char)
+            
+            
+            if elem.startswith('-' + char) \
+                    and len(elem) > 2 \
+                    and not elem.startswith("--"):
 #             if elem.startswith(char) and len(elem) > 2 :
 #             if elem.startswith(char) and len(elem) > 2 :
-                result.append(('-' + char, elem[2:]))
+                if not '-' + char in [x[0] for x in result] : result.append(('-' + char, elem[2:]))
+                
+#                 print "[%s:%d] '-' + char : appended => '%s'" % (thisfile(), linenum(), elem[2:])
+                
             
             elif elem.startswith('--') and len(elem) > 2 :
-                result.append((elem[2:], ''))
+                
+                if not (elem[2:], '') in result : result.append((elem[2:], ''))
+             
+#                 print "[%s:%d] '--' : appended => '%s'" % (thisfile(), linenum(), elem[2:])
              
 #             if elem == '--PLOT_GO' : result.append(('PLOT_GO', ''))
                 

@@ -227,7 +227,7 @@ def exec_1():
 
 #]]def exec_4()
 
-def exec_2():
+def exec_2(options):
 	
 	'''###################
 		Build wavefile : source
@@ -247,7 +247,8 @@ def exec_2():
 	length = 2.0
 # 	length = 1.0
 	
-	(analogdata, bindata) = createSineWave_2(A, f0, fs, length)
+	(analogdata, bindata, radians) = wl.createSineWave(A, f0, fs, length)
+# 	(analogdata, bindata) = createSineWave_2(A, f0, fs, length)
 # 	(analogdata, bindata) = createSineWave_2(1.0, f[0], 8000.0, 1.0)
 	
 	dpath = "audio"
@@ -266,13 +267,15 @@ def exec_2():
 # 	wf.compname   = wavefile_src.compname
 	wf.analogdata   = analogdata
 	wf.bindata = bindata
+	wf.radians = radians
 
 	print "[%s:%d] wf =>" % (thisfile(), linenum())
 	
 	for i in range(100, 110) :
 # 	for i in range(0, 10) :
 		
-		print "wf.analogdata[%d] = %f" % (i, wf.analogdata[i])
+		print "wf.analogdata[%d] = %f (radian = %f)" % (i, wf.analogdata[i], wf.radians[i])
+# 		print "wf.analogdata[%d] = %f" % (i, wf.analogdata[i])
 # 		print "analogdata[%d] = %f" % (i, analogdata[i])
 	
 	'''###################
@@ -286,8 +289,25 @@ def exec_2():
 	'''###################
 		Amplitude down	
 	###################'''
-	val = 200	# 600/1000
+	### set value
+	val = None
+	
+# 	print "[%s:%d] len(result) => %d" % (thisfile(), linenum(), len(result))
+
+# 	print "[%s:%d] options =>" % (thisfile(), linenum())
+
+# 	print options
+	
+	for pair in options :
+# 	for pair in result :
+		if pair[0] == '-v' :
+			val = int(pair[1])
+	
+	if val == None : val = 200	# default value
+	
+# 	val = 200	# 600/1000
 # 	val = 600	# 600/1000
+
 	amplitude_Down(wf, val)
 	
 	print "[%s:%d] absolutize => processed" % (thisfile(), linenum())
@@ -329,11 +349,116 @@ def test_1_GetOpt():
 	
 	print result
 
+def test_2_Get_SineWF(options):
+	
+# 	print options
+	freqList = [262, 294, 330, 349, 392, 440, 494, 523]  # ドレミファソラシド
+	
+	timelabel = get_TimeLabel_Now()
 
+	"""振幅A、基本周波数f0、サンプリング周波数 fs、
+	長さlength秒の正弦波を作成して返す"""
+	#createSineWave (A, f0, fs, length)
+	### param : A
+	A = 1.0
+	
+	### param : f0
+	f0 = None
+	
+	#ref x in a : https://stackoverflow.com/questions/7571635/fastest-way-to-check-if-a-value-exist-in-a-list "answered Sep 27 '11 at 15:25"
+	aryOf_f0 = [x for x in options if x[0] == '-f']
+	lenOf_f0 = len(aryOf_f0)
+	
+	if lenOf_f0 > 0 : f0 = int(aryOf_f0[0][1])
+# 	if lenOf_f0 > 0 : f0 = aryOf_f0[0][1]
+	else : f0 = freqList[0]		# default
+	
+	### param : phase
+	phase = None
+	
+	aryOf_phase = [x for x in options if x[0] == '-p']
+	lenOf_phase = len(aryOf_phase)
+	
+	if lenOf_phase > 0 : phase = float(aryOf_phase[0][1])
+# 	if lenOf_f0 > 0 : f0 = aryOf_f0[0][1]
+	else : phase = 1.0		# default
+	
+# 	if "-v" in [x[0] for x in options] : f0 = 
+	
+# 	f0 = freqList[0]
+	
+	### param : fs
+# 	fs = 16000.0
+# 	fs = 44100.0
+	fs = 8000.0
+	
+	### param : length
+	length = 2.0
+# 	length = 1.0
+	
+	### param : data
+	(analogdata, bindata, radians) = wl.createSineWave(A, f0, fs, length)
+# 	(analogdata, bindata) = createSineWave_2(A, f0, fs, length)
+# 	(analogdata, bindata) = createSineWave_2(1.0, f[0], 8000.0, 1.0)
+	
+	### param : file name, file path
+	dpath = "audio"
+	
+	fname = "test_1.sine-%d.%s.wav" % (f0, timelabel)
+	
+	fpath = "%s/%s" % (dpath, fname)
+
+	'''###################
+			build : wavefile		
+		###################'''
+	wf = wl.get_WaveFile__Sines(fname, A, f0, fs, length, phase = 1.0)
+	
+	dpath_dst = "audio"
+	
+	wl.save_WaveFile__Class(wf, dpath_dst=dpath_dst)
+
+	print "[%s:%d] file saved => '%s'" % (thisfile(), linenum(), fname)
+	
+def show_Message() :
+				
+	msg = '''
+	<Options>
+	-v	Volume down the amplitude --> 1.0 * v / 1000
+	-f	Base frequency ---> e.g. 262 for the A tone
+	-p	Phase of the sine curves ---> sin(2 * np.pi * f0 * n * phase / fs)'''
+	
+	print msg
+	
+				
 if __name__ == "__main__" :
 
-	test_1_GetOpt()
-# 	exec_2()
+	'''###################
+		validate : help option		
+	###################'''
+	args = sys.argv
+	
+	if '-h' in args or '-help' in args : 
+		show_Message()
+		
+		sys.exit(1)
+
+	'''###################
+		get options		
+	###################'''
+	keychars = "vf"
+	
+# 	print sys.argv
+	
+	result = get_opt_2(sys.argv, keychars)
+
+# 	result = test_1_GetOpt()
+	
+	'''###################
+		evecute		
+	###################'''
+
+	test_2_Get_SineWF(result)
+# 	exec_2(result)
 # 	exec_1()
 
 	print
