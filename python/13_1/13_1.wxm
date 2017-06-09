@@ -1,0 +1,107 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 16.04.2 ] */
+
+/* [wxMaxima: input   start ] */
+a : 3;
+xrng : [x, -%pi*a, %pi*a];
+f1 : sin(x);
+f2 : cos(x);
+fs : [f1, f2];
+wxplot2d(fs, xrng);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/* plot : 1 */
+a : 3;
+xrng : [x, -%pi*a, %pi*a];
+f1 : sin(x);
+f2 : cos(x);
+fs : [f1, f2, f1 + f2];
+wxplot2d(fs, xrng);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/* plot : 1.1 */
+a : 3;
+xrng : [x, -%pi*a, %pi*a];
+f1 : sin(x);
+f2 : cos(x);
+fs : [f1, f2, f1/2 + f2/2];
+wxplot2d(fs, xrng);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+mrng : [m, 1, 2];
+g : sin(x)/m + cos(x)/m;
+wxplot3d(g, xrng, mrng);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+mrng : [m, 1, 2];
+g : sin(x)/m + cos(x)/m;
+wxplot3d([g,1, xrng, mrng]);
+plot3d([g,1, xrng, mrng]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/* plot : 2 */
+h : sin(x) + cos(x);
+wxplot2d([h, sqrt(2) * sin(x + 1/sqrt(2))], xrng);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/* plot : 2.1 */
+h : 1/sqrt(2) * sin(x) + 1/sqrt(2) * cos(x);
+wxplot2d([sin(x), h], xrng);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/* plot : 3 */
+theta : 1;
+h1 : sin((x + theta) / 2);
+h2 : cos((x - theta) / 2);
+h : h1 * h2;
+wxplot2d([h1, h2, h, h1 + h2], xrng);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/* plot : 3.1 */
+theta : 1;
+h1 : sin((x + theta) / 2);
+h2 : cos((x - theta) / 2);
+h : h1 * h2;
+wxplot2d([h1 * h2, h1 * h2 * 2, sin(x) + sin(theta)], xrng);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/* plot : 3.2 */
+theta : 1;
+h1 : sin((x + theta) / 2);
+h2 : cos((x - theta) / 2);
+h : h1 * h2;
+wxplot2d([h1 * h2, h1 * h2 * 2, sin(x) + sin(theta), h1 * h2 * -2], xrng);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+cos(1/2);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+float(%);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+%*2;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/* plot : 3.3 */
+theta : x + 1;
+h1 : sin((x + theta) / 2);
+h2 : cos((x - theta) / 2);
+h : h1 * h2;
+wxplot2d([h1 * h2, h1 * h2 * 2, sin(x) + sin(theta), h1 * h2 * -2], xrng);
+/* [wxMaxima: input   end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$
