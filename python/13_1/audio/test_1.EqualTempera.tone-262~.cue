@@ -1,0 +1,54 @@
+REM Created with Helium Audio Joiner - www.imploded.com
+FILE "test_1.EqualTempera.tone-262~.wav" WAV
+  TRACK 01 AUDIO
+    PERFORMER ""
+    TITLE ""
+    INDEX 01 00:00:00
+  TRACK 02 AUDIO
+    PERFORMER ""
+    TITLE ""
+    INDEX 01 00:02:00
+  TRACK 03 AUDIO
+    PERFORMER ""
+    TITLE ""
+    INDEX 01 00:04:00
+  TRACK 04 AUDIO
+    PERFORMER ""
+    TITLE ""
+    INDEX 01 00:06:00
+  TRACK 05 AUDIO
+    PERFORMER ""
+    TITLE ""
+    INDEX 01 00:08:00
+  TRACK 06 AUDIO
+    PERFORMER ""
+    TITLE ""
+    INDEX 01 00:10:00
+  TRACK 07 AUDIO
+    PERFORMER ""
+    TITLE ""
+    INDEX 01 00:12:00
+  TRACK 08 AUDIO
+    PERFORMER ""
+    TITLE ""
+    INDEX 01 00:14:00
+  TRACK 09 AUDIO
+    PERFORMER ""
+    TITLE ""
+    INDEX 01 00:16:00
+  TRACK 10 AUDIO
+    PERFORMER ""
+    TITLE ""
+    INDEX 01 00:18:00
+  TRACK 11 AUDIO
+    PERFORMER ""
+    TITLE ""
+    INDEX 01 00:20:00
+  TRACK 12 AUDIO
+    PERFORMER ""
+    TITLE ""
+    INDEX 01 00:22:00
+  TRACK 13 AUDIO
+    PERFORMER ""
+    TITLE ""
+    INDEX 01 00:24:00

@@ -254,3 +254,104 @@ def get_WaveFile__Sines (fname, A, f0, fs, length, phase = 1.0):
 
 #]]createSineWave (A, f0, fs, length)
 
+
+'''
+    <function>
+    Volume down the analogdata values by val / 1000
+'''
+def amplitude_Down(wavefile, val) :
+    
+    baseval = 1000
+    
+    wavefile.analogdata = [ wavefile.analogdata[i] * \
+                            val / 1000.0 for i in range(len(wavefile.analogdata))]
+    
+    wavefile.bindata = [int(x * 32767.0) for x in wavefile.analogdata]
+    
+    wavefile.bindata = struct.pack("h" * len(wavefile.bindata), *wavefile.bindata)
+
+    return wavefile
+    
+def data_Absolutize(wavefile, generate_new = False, fname = '') :
+# def data_Absolutize(wavefile, generate_new = True, fname = '') :
+    
+    ###################
+    #    init : wf        
+    #####################
+    wf = None
+    
+    if generate_new == True : wf = wl.WaveFile()
+    else : wf = wavefile
+
+    ###################
+    #    absolutize : analog    
+    #####################
+    print "[%s:%d] len(wf.analogdata) => %d" % (thisfile(), linenum(), len(wf.analogdata))
+                        
+    length = len(wf.analogdata)
+                        
+    wf.analogdata = [math.fabs(wf.analogdata[i]) for i in range(len(wf.analogdata))]
+#     wf.analogdata = [math.fabs(wf.analogdata[i]) for i in wf.analogdata]
+                        
+#     for i in range(length) :
+#         
+#         wf.analogdata[i] = math.fabs(wf.analogdata[i])
+        
+    ###################
+    #    absolutize : binary    
+    #####################
+    wf.bindata = [int(x * 32767.0) for x in wf.analogdata]
+    
+    wf.bindata = struct.pack("h" * len(wf.bindata), *wf.bindata)
+        
+    '''###################
+        return        
+    ###################'''
+    return wf
+    
+def play (data, fs, bit):
+    import pyaudio
+    # ストリームを開く
+    p = pyaudio.PyAudio()
+    stream = p.open(format=pyaudio.paInt16,
+                    channels=1,
+                    rate=int(fs),
+                    output= True)
+    # チャンク単位でストリームに出力し音声を再生
+    chunk = 1024
+    sp = 0  # 再生位置ポインタ
+    buffer = data[sp:sp+chunk]
+    while buffer != '':
+        stream.write(buffer)
+        sp = sp + chunk
+        buffer = data[sp:sp+chunk]
+    stream.close()
+    p.terminate()
+    
+'''
+get_SineWF(A, f0, fs = 8000.0, phase=1.0, length=1.0, dpath = "audio", fname='')
+    Example : A note
+    get_SineWF(1.0, 262, fs = 8000.0, phase=1.0, length=1.0, dpath = "audio", fname='')
+'''
+def get_SineWF(A, f0, fs = 8000.0, phase=1.0, length=1.0, dpath = "audio", fname=''):
+    
+    timelabel = get_TimeLabel_Now()
+
+    ### param : data
+    (analogdata, bindata, radians) = createSineWave(A, f0, fs, length)
+    
+    if fname == '' : fname = "sinewavefile.%s.wav" % (timelabel)
+    
+    fpath = "%s/%s" % (dpath, fname)
+
+    '''###################
+            build : wavefile        
+        ###################'''
+    wf = get_WaveFile__Sines(fname, A, f0, fs, length, phase = 1.0)
+    
+#     save_WaveFile__Class(wf, dpath_dst=dpath)
+
+#     print "[%s:%d] file saved => '%s'" % (thisfile(), linenum(), fname)
+    
+    return wf
+    
