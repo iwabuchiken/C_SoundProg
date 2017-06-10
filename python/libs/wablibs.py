@@ -17,6 +17,22 @@ import struct
 import numpy as np
 from time import sleep
 
+EQUAL_TEMPERAMENTS = [1.000000,
+            1.059463,
+            1.122462,
+            1.189207,
+            1.259921,
+            1.334840,
+            1.414214,
+            1.498307,
+            1.587401,
+            1.681793,
+            1.781797,
+            1.887749,
+            2.000000]
+
+
+
 '''
     @param
     binwave    => binwave = struct.pack("h" * len(swav), *swav) : C:\WORKS_2\WS\Eclipse_Luna\C_SoundProg\python\test.py
@@ -193,7 +209,13 @@ def createSineWave (A, f0, fs, length):
 
 #]]createSineWave (A, f0, fs, length)
 
-def get_WaveFile__Sines (fname, A, f0, fs, length, phase = 1.0):
+'''
+<Usage>
+get_WaveFile__Sines("out.wav", A = 1.0, 262, 8000, length = 1.0, phase = 1.0)
+'''
+def get_WaveFile__Sines (fname, A, f0, fs, length = 1.0, phase = 1.0, type = "sine"):
+# def get_WaveFile__Sines (fname, A, f0, fs, length = 1.0, phase = 1.0):
+# def get_WaveFile__Sines (fname, A, f0, fs, length, phase = 1.0):
     
     '''###################
         prep : data        
@@ -204,21 +226,44 @@ def get_WaveFile__Sines (fname, A, f0, fs, length, phase = 1.0):
     radians = []
     
     # [-1.0, 1.0]�̏����l���������g���쐬
-    for n in np.arange(length * fs):  # n�̓T���v���C���f�b�N�X
-#     for n in arange(length * fs):  # n�̓T���v���C���f�b�N�X
+    if type == "sine" :
+        for n in np.arange(length * fs):  # n�̓T���v���C���f�b�N�X
+    #     for n in arange(length * fs):  # n�̓T���v���C���f�b�N�X
+            
+            radian = 2 * np.pi * f0 * n * phase / fs
+    #         radian = 2 * np.pi * f0 * n / fs
+            
+            s = A * np.sin(radian)
+    #         s = A * np.sin(2 * np.pi * f0 * n / fs)
+            # �U�����傫�����̓N���b�s���O
+            if s > 1.0:  s = 1.0
+            if s < -1.0: s = -1.0
+            
+            data.append(s)
+            
+            radians.append(radian)
+    elif type == "cosine" :
+        for n in np.arange(length * fs):  # n�̓T���v���C���f�b�N�X
+    #     for n in arange(length * fs):  # n�̓T���v���C���f�b�N�X
+            
+            radian = 2 * np.pi * f0 * n * phase / fs
+    #         radian = 2 * np.pi * f0 * n / fs
+            
+            s = A * np.cos(radian)
+    #         s = A * np.sin(2 * np.pi * f0 * n / fs)
+            # �U�����傫�����̓N���b�s���O
+            if s > 1.0:  s = 1.0
+            if s < -1.0: s = -1.0
+            
+            data.append(s)
+            
+            radians.append(radian)
+    else :
         
-        radian = 2 * np.pi * f0 * n * phase / fs
-#         radian = 2 * np.pi * f0 * n / fs
+        print "[%s:%d] Unknown trig name => '%s'" % (thisfile(), linenum(), type)
         
-        s = A * np.sin(radian)
-#         s = A * np.sin(2 * np.pi * f0 * n / fs)
-        # �U�����傫�����̓N���b�s���O
-        if s > 1.0:  s = 1.0
-        if s < -1.0: s = -1.0
-        
-        data.append(s)
-        
-        radians.append(radian)
+        return None
+    
         
     # [-32768, 32767]�̐����l�ɕϊ�
     bindata = [int(x * 32767.0) for x in data]
@@ -253,6 +298,44 @@ def get_WaveFile__Sines (fname, A, f0, fs, length, phase = 1.0):
 #     return data
 
 #]]createSineWave (A, f0, fs, length)
+
+def get_WaveFile__AnalogData (\
+              fname, analogdata, \
+              A, length, \
+              nchannels = 1, radians = None, \
+              f0 = None, fs = None):
+    
+    '''###################
+        prep : data        
+    ###################'''
+    
+    # [-32768, 32767]�̐����l�ɕϊ�
+    bindata = [int(x * 32767.0) for x in analogdata]
+#    plot(data[0:100]); show()
+    # �o�C�i���ɕϊ�
+    bindata = struct.pack("h" * len(bindata), *bindata)  # list��*������ƈ����W�J�����
+    
+    '''###################
+        build : wavefile        
+    ###################'''
+    wf = WaveFile(fname)
+    
+    wf.nchannels  = nchannels
+#     wf.nchannels  = 1
+    wf.samplewidth    = fs
+    
+    wf.analogdata   = analogdata
+    
+    wf.bindata = bindata
+    wf.radians = radians
+
+    wf.basefreq = f0
+    
+    '''###################
+        return        
+    ###################'''
+    return wf
+#]]get_WaveFile__AnalogData
 
 
 '''

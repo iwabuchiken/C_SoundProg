@@ -103,5 +103,10 @@ h : h1 * h2;
 wxplot2d([h1 * h2, h1 * h2 * 2, sin(x) + sin(theta), h1 * h2 * -2], xrng);
 /* [wxMaxima: input   end   ] */
 
+/* [wxMaxima: input   start ] */
+sin((x + theta) / 2);
+h2 : cos((x - theta) / 2)
+/* [wxMaxima: input   end   ] */
+
 /* Maxima can't load/batch files which end with a comment! */
 "Created with wxMaxima"$
