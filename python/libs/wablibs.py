@@ -711,15 +711,24 @@ def measure_Frequency_3(wavefile):
     # set : the first element
     max_val = -999  # set the starting value
     
+    min_val = 999   # set the starting value
+    
     curr = None
     
     for elem in a : 
+        if elem > max_val : 
+            max_val = elem
         
-        if elem > max_val : max_val = elem
+    for elem in a :
+        if elem < min_val :
+            min_val = elem
         
     for elem in a :
         
-        if elem < max_val : curr = elem; break
+        if elem < max_val \
+            and elem > min_val: 
+                curr = elem; break
+#         if elem < max_val : curr = elem; break
         
 #     curr = a[0]
     
