@@ -438,3 +438,85 @@ def get_SineWF(A, f0, fs = 8000.0, phase=1.0, length=1.0, dpath = "audio", fname
     
     return wf
     
+def measure_Frequency(wavefile):
+    
+    analogdata = wavefile.analogdata
+    
+    #test
+    error_band = 0.2
+    
+    print "[%s:%d] start measuring..." % (thisfile(), linenum())
+            
+    '''###################
+        measure        
+    ###################'''
+    a = [0,1.1,2.1,3.1,2.1,1.1,0.1,-1.1,-2.1,-3.1,-2.1,-1.1,\
+         0.1,1.1,2.1,3.1,2.1,1.1,0.1,-1.1,-2.1,-3.1,-2.1,-1.1,\
+         0.1,1.1,2.1,3.1,2.1,1.1,0.1,-1.1,-2.1,-3.1,-2.1,-1.1,0]
+#     a = [1,2,3,4,5,1,2,3,4,5,1,2,3,4,5]
+#     a = [0,1,2,3,2,1,0,-1,-2,-3,-2,-1,\
+#          0,1,2,3,2,1,0,-1,-2,-3,-2,-1,\
+#          0,1,2,3,2,1,0,-1,-2,-3,-2,-1,0]
+# #     a = [1,2,3,4,5,1,2,3,4,5,1,2,3,4,5]
+    
+    # set : the first element
+    curr = a[0]
+    
+    countOf_detections = 0
+    
+    index_detected = 0
+    
+    for i in range(1, len(a) - 1) :
+        
+#         print "[%s:%d] a[%d] = %d" % (thisfile(), linenum(), i, a[i])
+        
+        nex = a[i]
+        
+        print "[%s:%d] i = %d : curr = %.1f / nex = %.1f" \
+            % (thisfile(), linenum(), i, curr, nex)
+#         print "[%s:%d] i = %d : curr = %d / nex = %d" \
+            
+        
+        # compare : 1
+        if curr + error_band >= nex and curr - error_band <= nex:
+#         if curr + error_band >= nex and curr + error_band <= nex:
+#         if curr == nex :
+            
+            print "[%s:%d] Detected : " % (thisfile(), linenum())
+            
+            index_detected = i
+            
+            countOf_detections += 1
+            
+            if countOf_detections >= 2 :
+#             if countOf_detections > 2 :
+                
+#                 index_detected = i
+                
+                print "[%s:%d] Breaking the for loop..." % (thisfile(), linenum())
+                
+                break
+                
+            else :
+#                 countOf_detections += 1
+                
+                continue
+            
+        else : continue
+        
+    #]]for i in range(1, len(a) - 1) :
+    
+    print "[%s:%d] Result : detected index = %d / length = %d - %d = %d" \
+            % (thisfile(), linenum(), \
+               index_detected, index_detected, 0, \
+               (index_detected - 0))
+    
+    
+    '''###################
+        message        
+    ###################'''
+    
+    
+            
+    
+    return -1.0
