@@ -101,6 +101,91 @@ def exec_1__Measure_Frequency():
     ###################'''
     return
 
+def exec_2__Measure_Frequency_Others():
+	
+    '''###################
+    	options		
+    ###################'''
+    options = get_opt_2(sys.argv, "f")
+    
+    if not "-f" in [x[0] for x in options] :
+    	
+    	print "'-f' option needed"
+    	
+    	return
+    
+#     print options
+#      
+#     return
+    
+    '''###################
+    	prep : wfs
+    ###################'''
+    '''###################
+    	prep : wf : sine
+    ###################'''
+    A = 1.0; fs = 8000.0; length = 1.0; phase = 1.0; type = "sine"
+    
+    f0_val = [x[1] for x in options if x[0] == '-f'][0]
+    
+    f0 = int(f0_val);
+#     f0 = 262 * wl.EQUAL_TEMPERAMENTS[6];
+#     f0 = 262 * wl.EQUAL_TEMPERAMENTS[3];
+#     f0 = 262;
+    
+    timelabel = get_TimeLabel_Now()
+    
+    fname_sines = "test_1.sines.%s.f0=%d_phase-%1.2f.wav" % (timelabel, f0, phase)
+    
+    wf_sines = wl.get_WaveFile__Sines (fname_sines, A, f0, fs, length, phase, type)
+
+    '''###################
+    	prep : wf : cosine
+    ###################'''
+    A = 1.0; fs = 8000.0; length = 1.0; phase = 1.0; type = "cosine"
+    
+    f0_val = [x[1] for x in options if x[0] == '-f'][0]
+    
+    f0 = int(f0_val);
+#     f0 = 262 * wl.EQUAL_TEMPERAMENTS[6];
+#     f0 = 262 * wl.EQUAL_TEMPERAMENTS[3];
+#     f0 = 262;
+    
+    timelabel = get_TimeLabel_Now()
+    
+    fname_cosines = "test_1.cosines.%s.f0=%d_phase-%1.2f.wav" % (timelabel, f0, phase)
+    
+    wf_cosines = wl.get_WaveFile__Sines (fname_cosines, A, f0, fs, length, phase, type)
+
+    '''###################
+    	measure freq		
+    ###################'''
+    print "[%s:%d] ===== sine ===============" % (thisfile(), linenum())
+
+    result_sines = wl.measure_Frequency_3(wf_sines)
+#     result = wl.measure_Frequency(wf_sines)
+    
+    print "[%s:%d] freq of sines => %d" % (thisfile(), linenum(), result_sines)
+
+    print "[%s:%d] ===== cosine ===============" % (thisfile(), linenum())
+
+    result_cosines = wl.measure_Frequency_3(wf_cosines)
+#     result = wl.measure_Frequency(wf_sines)
+    
+    print "[%s:%d] freq of cosines => %d" % (thisfile(), linenum(), result_cosines)
+    
+    
+    '''###################
+    	ending		
+    ###################'''
+    print "[%s:%d] exec_2__Measure_Frequency ==> done" % (thisfile(), linenum())
+    		
+    
+    '''###################
+    	return		
+    ###################'''
+    return
+
     
 if __name__ == "__main__" :
 
@@ -124,7 +209,8 @@ if __name__ == "__main__" :
     '''###################
     	evecute		
     ###################'''
-    exec_1__Measure_Frequency()
+    exec_2__Measure_Frequency_Others()
+#     exec_1__Measure_Frequency()
     
     print
     print "[%s:%d] done" % (thisfile(), linenum())
