@@ -49,12 +49,31 @@ def show_Message() :
     print msg
 
 def exec_1__Measure_Frequency():
+	
+    '''###################
+    	options		
+    ###################'''
+    options = get_opt_2(sys.argv, "f")
+    
+    if not "-f" in [x[0] for x in options] :
+    	
+    	print "'-f' option needed"
+    	
+    	return
+    
+#     print options
+#      
+#     return
     
     '''###################
     	prep : wfs		
     ###################'''
     A = 1.0; fs = 8000.0; length = 1.0; phase = 1.0; type = "sine"
-    f0 = 262 * wl.EQUAL_TEMPERAMENTS[6];
+    
+    f0_val = [x[1] for x in options if x[0] == '-f'][0]
+    
+    f0 = int(f0_val);
+#     f0 = 262 * wl.EQUAL_TEMPERAMENTS[6];
 #     f0 = 262 * wl.EQUAL_TEMPERAMENTS[3];
 #     f0 = 262;
     
@@ -67,7 +86,8 @@ def exec_1__Measure_Frequency():
     '''###################
     	measure freq		
     ###################'''
-    result = wl.measure_Frequency(wf_sines)
+    result = wl.measure_Frequency_2(wf_sines)
+#     result = wl.measure_Frequency(wf_sines)
     
     
     '''###################
