@@ -53,7 +53,10 @@ def exec_1__Measure_Frequency():
     '''###################
     	prep : wfs		
     ###################'''
-    A = 1.0; f0 = 262; fs = 8000.0; length = 1.0; phase = 1.0; type = "sine"
+    A = 1.0; fs = 8000.0; length = 1.0; phase = 1.0; type = "sine"
+    f0 = 262 * wl.EQUAL_TEMPERAMENTS[6];
+#     f0 = 262 * wl.EQUAL_TEMPERAMENTS[3];
+#     f0 = 262;
     
     timelabel = get_TimeLabel_Now()
     

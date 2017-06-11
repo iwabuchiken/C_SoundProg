@@ -443,16 +443,19 @@ def measure_Frequency(wavefile):
     analogdata = wavefile.analogdata
     
     #test
-    error_band = 0.2
+    error_band = 0.13
+#     error_band = 0.1
+#     error_band = 0.2
     
     print "[%s:%d] start measuring..." % (thisfile(), linenum())
             
     '''###################
         measure        
     ###################'''
-    a = [0,1.1,2.1,3.1,2.1,1.1,0.1,-1.1,-2.1,-3.1,-2.1,-1.1,\
-         0.1,1.1,2.1,3.1,2.1,1.1,0.1,-1.1,-2.1,-3.1,-2.1,-1.1,\
-         0.1,1.1,2.1,3.1,2.1,1.1,0.1,-1.1,-2.1,-3.1,-2.1,-1.1,0]
+    a = analogdata
+#     a = [0,1.1,2.1,3.1,2.1,1.1,0.1,-1.1,-2.1,-3.1,-2.1,-1.1,\
+#          0.1,1.1,2.1,3.1,2.1,1.1,0.1,-1.1,-2.1,-3.1,-2.1,-1.1,\
+#          0.1,1.1,2.1,3.1,2.1,1.1,0.1,-1.1,-2.1,-3.1,-2.1,-1.1,0]
 #     a = [1,2,3,4,5,1,2,3,4,5,1,2,3,4,5]
 #     a = [0,1,2,3,2,1,0,-1,-2,-3,-2,-1,\
 #          0,1,2,3,2,1,0,-1,-2,-3,-2,-1,\
@@ -472,7 +475,8 @@ def measure_Frequency(wavefile):
         
         nex = a[i]
         
-        print "[%s:%d] i = %d : curr = %.1f / nex = %.1f" \
+#         print "[%s:%d] i = %d : curr = %.1f / nex = %.1f" \
+        print "[%s:%d] i = %d : curr = %.4f / nex = %.4f" \
             % (thisfile(), linenum(), i, curr, nex)
 #         print "[%s:%d] i = %d : curr = %d / nex = %d" \
             
@@ -506,10 +510,14 @@ def measure_Frequency(wavefile):
         
     #]]for i in range(1, len(a) - 1) :
     
+    freq = index_detected - 0
+    
     print "[%s:%d] Result : detected index = %d / length = %d - %d = %d" \
+            "(f0 = %d)"\
             % (thisfile(), linenum(), \
                index_detected, index_detected, 0, \
-               (index_detected - 0))
+               freq, wavefile.basefreq)
+#                (index_detected - 0))
     
     
     '''###################
@@ -519,4 +527,5 @@ def measure_Frequency(wavefile):
     
             
     
-    return -1.0
+    return freq
+#     return -1.0
