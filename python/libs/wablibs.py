@@ -142,7 +142,7 @@ class WaveFile :
                  framerate=None, nframes=None,\
                  comptype=None, compname=None, \
                  analogdata = None, amplitude = 1.0,\
-                 length = 1.0\
+                 length = 1.0, phase = 1.0\
                  ) :
         
         self.fname = fname
@@ -162,6 +162,8 @@ class WaveFile :
         self.amplitude  = amplitude
         
         self.length     = length
+        
+        self.phase     = phase
 
 def copy_WaveFile(wavefile_src, fname_new=''):
     
@@ -358,6 +360,74 @@ def get_WaveFile__AnalogData (\
     ###################'''
     return wf
 #]]get_WaveFile__AnalogData
+
+'''
+get_WaveFile__Radians
+<Descriptions>
+    1. Receives radians; use the radians data, generate
+        sin values, binary data
+    2. Returns a WaveFile class instance
+'''
+def get_WaveFile__Radians (\
+              fname, radian_values, \
+              A, length, \
+              f0, nchannels = 1, \
+              fs = None, phase = 1.0):
+
+    '''###################
+        prep : data        
+    ###################'''
+    if fs == None : fs = 8000.0
+    
+    analogdata = []
+    
+    for n in radian_values:  # n�̓T���v���C���f�b�N�X
+#     for n in np.arange(length * fs):  # n�̓T���v���C���f�b�N�X
+#     for n in arange(length * fs):  # n�̓T���v���C���f�b�N�X
+        
+#         radian = 2 * np.pi * f0 * n * phase / fs
+        
+        s = A * np.sin(n)
+#         s = A * np.sin(radian)
+
+        if s > 1.0:  s = 1.0
+        if s < -1.0: s = -1.0
+        
+        analogdata.append(s)
+        
+#         radians.append(radian)
+    
+    # [-32768, 32767]�̐����l�ɕϊ�
+    bindata = [int(x * 32767.0) for x in analogdata]
+#    plot(data[0:100]); show()
+    # �o�C�i���ɕϊ�
+    bindata = struct.pack("h" * len(bindata), *bindata)  # list��*������ƈ����W�J�����
+    
+    '''###################
+        build : wavefile        
+    ###################'''
+    wf = WaveFile(fname)
+    
+    wf.nchannels  = nchannels
+#     wf.nchannels  = 1
+    wf.samplewidth    = fs
+    
+    wf.analogdata   = analogdata
+    
+    wf.bindata = bindata
+    wf.radians = radian_values
+
+    wf.basefreq = f0
+    
+    wf.length   = length
+    
+    wf.phase   = phase
+    
+    '''###################
+        return        
+    ###################'''
+    return wf
+#]]get_WaveFile__Radians
 
 
 '''
@@ -1034,4 +1104,17 @@ def measure_Frequency_4(wavefile):
     return result
 #]]measure_Frequency_4(wavefile)
 
+def standardize_Data(analogdata):
+    
+    max_val = max(analogdata)
+    
+    min_val = min(analogdata)
+
+    width = (max_val - min_val) / 2
+    
+    center = (max_val + min_val) / 2
+    
+    return [(n - center) / width for n in analogdata]
+    
+    
 
