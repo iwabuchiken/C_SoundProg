@@ -335,7 +335,26 @@ def get_WaveFile__AnalogData (\
     bindata = [int(x * 32767.0) for x in analogdata]
 #    plot(data[0:100]); show()
     # �o�C�i���ɕϊ�
+    
+#     print "[%s:%d] len(bindata) => %d" % (thisfile(), linenum(), len(bindata))
+            #=> 8000
+    
+#     bindata = struct.pack("i" * len(bindata), *bindata)  # list��*������ƈ����W�J�����
+    ### memo
+    ### analogdata needs to be between >=-1.0 and <= 1.0
+    ### otherwise, gets error
+    ###     => 'struct.error: short format requires SHRT_MIN <= number <= SHRT_MAX'
     bindata = struct.pack("h" * len(bindata), *bindata)  # list��*������ƈ����W�J�����
+    
+#     print "[%s:%d] len(bindata)(packed)=> %d" % (thisfile(), linenum(), len(bindata))
+            #=> 32000
+    
+#     #debug
+#     for i in range(10) :
+#         
+#         print "[%s:%d] bindata[%d] => %s" % (thisfile(), linenum(), i, bindata[i])
+# #         print "[%s:%d] bindata[%d] => %.4f" % (thisfile(), linenum(), i, bindata[i])
+
     
     '''###################
         build : wavefile        
@@ -428,6 +447,60 @@ def get_WaveFile__Radians (\
     ###################'''
     return wf
 #]]get_WaveFile__Radians
+
+'''
+    @param wavefile: The target data is updated already;
+                    update other types of data
+    @param type: 'radians'
+    
+    @return: Updated wavefile instance
+'''
+def update_WaveFile(wavefile, type):
+    
+    '''###################
+        type names        
+    ###################'''
+    TYPE_RADIANS = 'radians'
+    
+    '''###################
+        prep : data        
+    ###################'''
+    if type == TYPE_RADIANS :
+        
+        radian_values = wavefile.radians
+        
+        analogdata = []
+        
+        A = wavefile.amplitude
+
+        for n in radian_values:  # n�̓T���v���C���f�b�N�X
+            
+            s = A * np.sin(n)
+    
+            if s > 1.0:  s = 1.0
+            if s < -1.0: s = -1.0
+            
+            analogdata.append(s)
+        
+        # [-32768, 32767]�̐����l�ɕϊ�
+        bindata = [int(x * 32767.0) for x in analogdata]
+    #    plot(data[0:100]); show()
+        # �o�C�i���ɕϊ�
+        bindata = struct.pack("h" * len(bindata), *bindata)  # list��*������ƈ����W�J�����
+        
+        # update
+#                 self.bindata = bindata
+#         self.analogdata   = analogdata
+
+        wavefile.analogdata = analogdata
+        
+        wavefile.bindata = bindata
+        
+    '''###################
+        return        
+    ###################'''
+    return wavefile
+#]]update_WaveFile
 
 
 '''
@@ -978,6 +1051,7 @@ def measure_Frequency_4(wavefile):
     
     min_val = 999   # set the starting value
     
+    #ref dictionary http://www.python-izm.com/contents/basis/dict.shtml#a003
     result = {}
     
     curr = None

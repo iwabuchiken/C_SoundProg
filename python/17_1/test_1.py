@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 '''
-pushd C:\WORKS_2\WS\Eclipse_Luna\C_SoundProg\python\16_1
+pushd C:\WORKS_2\WS\Eclipse_Luna\C_SoundProg\python\17_1
 test_1.py
 
 ref : http://aidiary.hatenablog.com/entry/20110607/1307449007
@@ -227,7 +227,7 @@ def exec_2__SinePlusSine2X_Standardize():
 
 #     #debug
 #     for i in range(0, 20) :
-#         
+#          
 #         print "[%s:%d] wf_Sines.radians[%d] => %.4f (of 2 * pi = %.4f)"\
 #                 % (thisfile(), linenum(), \
 #                    i, wf_Sines.radians[i], wf_Sines.radians[i] / np.pi)
@@ -236,17 +236,7 @@ def exec_2__SinePlusSine2X_Standardize():
     '''###################
     	prep : wfs : Sines 2X
     ###################'''
-#     A = 1.0; fs = 8000.0; length = 1.0; phase = 1.0
     type = "sine"
-    
-#     f0_val = [x[1] for x in options if x[0] == '-f'][0]
-    
-#     f0 = int(f0_val);
-#     f0 = 262 * wl.EQUAL_TEMPERAMENTS[6];
-#     f0 = 262 * wl.EQUAL_TEMPERAMENTS[3];
-#     f0 = 262;
-    
-    timelabel = get_TimeLabel_Now()
     
     fname_Sines2X = "test_1.Sines2X.%s.f0=%d_phase-%1.2f.wav" \
                     % (timelabel, f0, phase)
@@ -254,53 +244,37 @@ def exec_2__SinePlusSine2X_Standardize():
     wf_Sines2X_tmp = wl.get_WaveFile__Sines (\
                         fname_Sines2X, A, f0, fs, length, phase, type)
     
+#     radian_values = [3 * x for x in wf_Sines2X_tmp.radians]
     radian_values = [2 * x for x in wf_Sines2X_tmp.radians]
 #     radian_values = wf_Sines2X_tmp.radians
     
-    wf_Sines2X = wl.get_WaveFile__Radians (\
-                    fname = fname_Sines2X, \
-                    radian_values=radian_values,\
-                    A = wf_Sines2X_tmp.amplitude,\
-                    length = wf_Sines2X_tmp.length, \
-                    f0 = wf_Sines2X_tmp.basefreq,\
-                    nchannels = 1, \
-                    fs = wf_Sines2X_tmp.samplewidth, \
-                    phase = 1.0)
+    wf_Sines2X_tmp.radians = radian_values
     
-#     analogdata = wf_SinesSquared.analogdata
+    wf_Sines2X = wl.update_WaveFile(wf_Sines2X_tmp, "radians")  #=> works
     
-#     analogdata_Standardized = wl.standardize_Data(analogdata)
-#     
-#     wf_SinesSquared.analogdata = analogdata_Standardized
 
     '''###################
         prep : wfs : Sines + Sines 2X
     ###################'''
-    analogdata_SinesPlusSines2X_tmp = [x + y for x, y in zip(wf_Sines.analogdata, wf_Sines2X.analogdata)]
+    analogdata_SinesPlusSines2X = [sum(x) for x \
+                               in zip(wf_Sines.analogdata, wf_Sines2X.analogdata)]
     
-    #debug
-    for i in range(0, 10) :
-#     for i in analogdata_SinesPlusSines2X :
-        
-        print "[%s:%d] analogdata_SinesPlusSines2X_tmp[%d] => %.4f"\
-                    % (thisfile(), linenum(), \
-                       i, analogdata_SinesPlusSines2X_tmp[i])
+    ### memo
+    # if not standardized, then struct.pack with "h" param in wablibs.py ==> Gets error
+    analogdata_SinesPlusSines2X = wl.standardize_Data(analogdata_SinesPlusSines2X)
     
-    # std-ize
-    analogdata_SinesPlusSines2X_Standardized = \
-                    wl.standardize_Data(analogdata_SinesPlusSines2X_tmp)
+    fname_SinesPlusSines2X = \
+                "test_1.SinesPlusSines2X.%s.f0=%d_phase-%1.2f.wav" % (timelabel, f0, phase)
     
-#               fname = wf_Sines2X.fname, \
-    wf_Sines2X_final = wl.get_WaveFile__AnalogData (\
-              fname = wf_Sines2X.fname, \
-              analogdata = analogdata_SinesPlusSines2X_Standardized, \
-              A = wf_Sines2X.amplitude, \
-              length = wf_Sines2X.length, \
-              nchannels = 1, \
-              radians = wf_Sines2X.radians, \
-              f0 = wf_Sines2X.basefreq, \
-              fs = wf_Sines2X.samplewidth)
+#     print "[%s:%d] struct.SHRT_MAX => %d" % (thisfile(), linenum(), SHRT_MAX)
+#     print "[%s:%d] struct.SHRT_MAX => %d" % (thisfile(), linenum(), struct.SHRT_MAX)
     
+    wf_SinesPlusSines2X = wl.get_WaveFile__AnalogData(\
+              fname_SinesPlusSines2X, \
+              analogdata_SinesPlusSines2X, \
+              A, length, \
+              nchannels = 1, radians = None, \
+              f0 = None, fs = None)
 
     '''###################
         Freq : Sines        
@@ -319,12 +293,21 @@ def exec_2__SinePlusSine2X_Standardize():
     
     print result_Sines2X
 
-    ### Sines2X final
-    result_Sines2X_final = wl.measure_Frequency_4(wf_Sines2X_final)
+    '''###################
+        save : wave file        
+    ###################'''
+    ### Sines
+    dpath = "audio"
     
-    print "[%s:%d] result_Sines2X_final =>" % (thisfile(), linenum())
-    
-    print result_Sines2X_final
+    wl.save_WaveFile__Class(wavefile = wf_Sines, fname_dst = wf_Sines.fname, dpath_dst=dpath)
+
+    ### Sines 2X
+    wf = wf_Sines2X
+    wl.save_WaveFile__Class(wavefile = wf, fname_dst = wf.fname, dpath_dst=dpath)
+
+    ### Sines + Sines 2X
+    wf = wf_SinesPlusSines2X
+    wl.save_WaveFile__Class(wavefile = wf, fname_dst = wf.fname, dpath_dst=dpath)
 
     '''###################
         prep : wfs : Sines + Sines squared
