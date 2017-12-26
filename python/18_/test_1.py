@@ -61,14 +61,21 @@ def exec_prog() :
     sec = 5   #秒
      
     swav=[]
-     
+    
+    pow_Val = 2
+    
     for n in np.arange(fs * sec):
         #サイン波を生成
-        s = a * np.sin(2.0 * np.pi * f0 * n / fs)
+        s = a * np.power(np.sin(2.0 * np.pi * f0 * n / fs), pow_Val) \
+            * np.cos(2.0 * np.pi * f0 * n / fs) * (-1)
+#         s = a * np.sin(2.0 * np.pi * f0 * n / fs) \
+#             * np.cos(2.0 * np.pi * f0 * n / fs)
+#         s = a * np.power(np.sin(2.0 * np.pi * f0 * n / fs), pow_Val)
+#         s = a * np.sin(2.0 * np.pi * f0 * n / fs)
         swav.append(s)
         
-    plt.plot(swav[0:100])
-    plt.show()
+#     plt.plot(swav[0:100])
+#     plt.show()
     
     #サイン波を-32768から32767の整数値に変換(signed 16bit pcmへ)
     swav = [int(x * 32767.0) for x in swav]
@@ -77,7 +84,8 @@ def exec_prog() :
     binwave = struct.pack("h" * len(swav), *swav)
      
     #サイン波をwavファイルとして書き出し
-    fname_Out = "output_%s.wav" % (get_TimeLabel_Now())
+    fname_Out = "output_%s.sin-pow-2_cos_(-1).wav" % (get_TimeLabel_Now())
+#     fname_Out = "output_%s.pow-%d.wav" % (get_TimeLabel_Now(), pow_Val)
     
     w = wave.Wave_write(fname_Out)
 #     w = wave.Wave_write("output.wav")
