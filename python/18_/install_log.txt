@@ -1,0 +1,87 @@
+C:\WORKS_2>python -m pip install --upgrade pip
+Collecting pip
+  Using cached pip-9.0.1-py2.py3-none-any.whl
+Installing collected packages: pip
+  Found existing installation: pip 7.1.2
+    Uninstalling pip-7.1.2:
+      Successfully uninstalled pip-7.1.2
+Successfully installed pip-9.0.1
+
+C:\WORKS_2>python -m pip install wheel
+Collecting wheel
+  Using cached wheel-0.30.0-py2.py3-none-any.whl
+Installing collected packages: wheel
+Successfully installed wheel-0.30.0
+
+
+python -m pip install C:\WORKS_2\Downloads\scipy-1.0.0-cp35-none-win_amd64.whl
+
+C:\WORKS_2>python -m pip install C:\WORKS_2\Downloads\scipy-1.0.0-cp35-none-win_
+amd64.whl
+Processing c:\works_2\downloads\scipy-1.0.0-cp35-none-win_amd64.whl
+Collecting numpy>=1.8.2 (from scipy==1.0.0)
+  Downloading numpy-1.13.3-cp35-none-win_amd64.whl (13.1MB)
+    100% |################################| 13.1MB 70kB/s
+Installing collected packages: numpy, scipy
+Successfully installed numpy-1.13.3 scipy-1.0.0
+
+python -m pip install sympy
+C:\WORKS_2>python -m pip install sympy
+Collecting sympy
+  Using cached sympy-1.1.1.tar.gz
+Collecting mpmath>=0.19 (from sympy)
+  Using cached mpmath-1.0.0.tar.gz
+Building wheels for collected packages: sympy, mpmath
+  Running setup.py bdist_wheel for sympy ... done
+  Stored in directory: C:\Users\iwabuchiken\AppData\Local\pip\Cache\wheels\86\b6
+\ef\72760cc52418901e59f20a85454243f2c9503a8f89b5501f5f
+  Running setup.py bdist_wheel for mpmath ... done
+  Stored in directory: C:\Users\iwabuchiken\AppData\Local\pip\Cache\wheels\f9\86
+\f7\eecdbbecc0bc292faa3dfbafd546c38b73ae9762aee9e9ac82
+Successfully built sympy mpmath
+Installing collected packages: mpmath, sympy
+Successfully installed mpmath-1.0.0 sympy-1.1.1
+
+C:\WORKS_2>python -m pip install matplotlib
+Collecting matplotlib
+  Downloading matplotlib-2.1.1-cp35-cp35m-win_amd64.whl (8.7MB)
+    100% |################################| 8.7MB 109kB/s
+Collecting cycler>=0.10 (from matplotlib)
+  Using cached cycler-0.10.0-py2.py3-none-any.whl
+Collecting six>=1.10 (from matplotlib)
+  Using cached six-1.11.0-py2.py3-none-any.whl
+Collecting pytz (from matplotlib)
+  Using cached pytz-2017.3-py2.py3-none-any.whl
+Requirement already satisfied: numpy>=1.7.1 in c:\works_2\programs\python\python
+_3.5.1\lib\site-packages (from matplotlib)
+Collecting pyparsing!=2.0.4,!=2.1.2,!=2.1.6,>=2.0.1 (from matplotlib)
+  Using cached pyparsing-2.2.0-py2.py3-none-any.whl
+Collecting python-dateutil>=2.0 (from matplotlib)
+  Using cached python_dateutil-2.6.1-py2.py3-none-any.whl
+Installing collected packages: six, cycler, pytz, pyparsing, python-dateutil, ma
+tplotlib
+Successfully installed cycler-0.10.0 matplotlib-2.1.1 pyparsing-2.2.0 python-dat
+eutil-2.6.1 pytz-2017.3 six-1.11.0
+
+C:\WORKS_2>python -m pip install pandas
+Collecting pandas
+  Downloading pandas-0.21.1-cp35-cp35m-win_amd64.whl (9.0MB)
+    100% |################################| 9.0MB 102kB/s
+Requirement already satisfied: pytz>=2011k in c:\works_2\programs\python\python_
+3.5.1\lib\site-packages (from pandas)
+Requirement already satisfied: numpy>=1.9.0 in c:\works_2\programs\python\python
+_3.5.1\lib\site-packages (from pandas)
+Requirement already satisfied: python-dateutil>=2 in c:\works_2\programs\python\
+python_3.5.1\lib\site-packages (from pandas)
+Requirement already satisfied: six>=1.5 in c:\works_2\programs\python\python_3.5
+.1\lib\site-packages (from python-dateutil>=2->pandas)
+Installing collected packages: pandas
+Successfully installed pandas-0.21.1
+
+C:\WORKS_2>python -m pip install scikit-learn
+Collecting scikit-learn
+  Downloading scikit_learn-0.19.1-cp35-cp35m-win_amd64.whl (4.3MB)
+    100% |################################| 4.3MB 177kB/s
+Installing collected packages: scikit-learn
+Successfully installed scikit-learn-0.19.1
+
